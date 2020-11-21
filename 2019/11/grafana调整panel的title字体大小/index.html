@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.77.0 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="author" content="YJ">
+<meta name="keywords" content="grafana, panel, title, font, size, development, next-gen">
+<meta name="description" content="grafana中panel的title默认字体很小，特别是投放到大屏上之后，基本处于看不清的状态">
+
+
+<meta property="og:description" content="grafana中panel的title默认字体很小，特别是投放到大屏上之后，基本处于看不清的状态">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Grafana调整Panel的Title字体大小">
+<meta name="twitter:title" content="Grafana调整Panel的Title字体大小">
+<meta property="og:url" content="https://yj1516.top/2019/11/grafana%E8%B0%83%E6%95%B4panel%E7%9A%84title%E5%AD%97%E4%BD%93%E5%A4%A7%E5%B0%8F/">
+<meta property="twitter:url" content="https://yj1516.top/2019/11/grafana%E8%B0%83%E6%95%B4panel%E7%9A%84title%E5%AD%97%E4%BD%93%E5%A4%A7%E5%B0%8F/">
+<meta property="og:site_name" content="Time">
+<meta property="og:description" content="grafana中panel的title默认字体很小，特别是投放到大屏上之后，基本处于看不清的状态">
+<meta name="twitter:description" content="grafana中panel的title默认字体很小，特别是投放到大屏上之后，基本处于看不清的状态">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2019-11-01T13:30:42">
+  
+  
+    <meta property="article:modified_time" content="2019-11-01T13:30:42">
+  
+  
+  
+    
+      <meta property="article:section" content="visualization">
+    
+      <meta property="article:section" content="grafana">
+    
+  
+  
+    
+      <meta property="article:tag" content="grafana">
+    
+      <meta property="article:tag" content="font">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/urheeneggs.jpg">
+  <meta property="twitter:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/urheeneggs.jpg">
+
+
+  <meta property="og:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/grafana.jpg">
+  <meta property="twitter:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/grafana.jpg">
+
+
+
+
+  <meta property="og:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg">
+  <meta property="twitter:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg">
+
+
+    <title>Grafana调整Panel的Title字体大小</title>
+
+    <link rel="icon" href="https://gitee.com/YJ1516/MyPic/raw/master/picgo/favicon.jpg">
+    
+
+    
+
+    <link rel="canonical" href="https://yj1516.top/2019/11/grafana%E8%B0%83%E6%95%B4panel%E7%9A%84title%E5%AD%97%E4%BD%93%E5%A4%A7%E5%B0%8F/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://yj1516.top/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-150098882-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://yj1516.top/">Time</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://yj1516.top/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://yj1516.top/#about">
+          <img class="sidebar-profile-picture" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">YJ</h4>
+        
+          <h5 class="sidebar-profile-bio"><em>猫奴</em> <em>闲人</em></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/YHYJ" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              post-header-cover--full"
+       style="background-image:url('https://gitee.com/YJ1516/MyPic/raw/master/picgo/grafana.jpg')"
+       data-behavior="5">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      Grafana调整Panel的Title字体大小
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2019-11-01T13:30:42&#43;08:00">
+        
+  
+  
+  
+  
+    2019-11-1
+  
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://yj1516.top/categories/visualization">visualization</a>, 
+    
+      <a class="category-link" href="https://yj1516.top/categories/grafana">grafana</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="5"
+        class="hasCover
+               hasCoverMetaIn
+               hasCoverCaption">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+            <span class="post-header-cover-caption caption">If you miss the train I&rsquo;m on, You will know that I am gone</span>
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>grafana中panel的title默认字体很小，特别是投放到大屏上之后，基本处于看不清的状态</p>
+
+<h1 id="table-of-contents">Table of Contents</h1><nav id="TableOfContents">
+<ul>
+<li><a href="#注意">注意</a></li>
+<li><a href="#修改grafana配置项">修改grafana配置项</a></li>
+<li><a href="#修改title字体">修改title字体</a></li>
+</ul>
+</nav>
+
+<p>在PC上grafana展示效果挺不错的，但一旦投到大屏上，panel title的字体就显得过小了，万一大屏分辨率再不高(不到1080p)，基本是一团墨汁，因此需要修改title的字体大小</p>
+
+<p>经过一番搜索，在<a href="https://github.com/grafana/grafana">grafana官方仓库</a>的<a href="https://github.com/grafana/grafana/issues/1875"><span class="highlight-text green">#1875</span></a>找到了解决方案，结合官方<a href="https://github.com/grafana/grafana/blob/v6.0.0/CHANGELOG.md#breaking-changes-1">CHANGELOG</a>基本算是完美解决</p>
+
+<h1 id="注意">注意</h1>
+
+<p>该解决方案是通过在Text panel中注入html来实现的，根据<a href="https://github.com/grafana/grafana/issues/4117">#4117</a>所说，允许在Text panel里注入html是有安全隐患的，因此最晚在v6.0.0版本更新中，官方默认禁用了该功能</p>
+
+<p>文章是通过在Text panel注入html来实现修改title字体的，因此没有能力承担该操作带来的风险的话，请不要进行操作！</p>
+
+<hr />
+
+<h1 id="修改grafana配置项">修改grafana配置项</h1>
+
+<p>根据v6.0.0的CHANGELOG中<a href="https://github.com/grafana/grafana/blob/v6.0.0/CHANGELOG.md#breaking-changes-1">breaking-changes-1</a>条目所说，自该版本之后grafana默认禁用了html注入，有两种方法解除禁用：</p>
+
+<ul>
+<li><p>修改grafana配置文件
+<div class="alert info ">
+  <p>在docker中，grafana的配置文件是<code>/usr/share/grafana/conf/defaults.ini</code></p>
+</div></p>
+
+<p>打开<code>defaults.ini</code>，找到如图所示字段：</p>
+
+
+ 
+  
+  
+  
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+  
+
+ 
+  
+  
+  
+  
+    
+  
+    
+      
+    
+  
+
+<div class="figure center" >
+  
+    <a class="fancybox" href="https://gitee.com/YJ1516/MyPic/raw/master/picgo/grafana_confile.png" title="grafana confile" data-fancybox-group="group:grafana-confile">
+  
+    <img class="fig-img" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/grafana_confile.png" style="width: 100%;height: 100%;" alt="grafana confile">
+  
+    </a>
+  
+   
+    <span class="caption">grafana confile</span>
+  
+</div>
+
+  <div style="clear:both;"></div>
+
+
+<p>将其中的<code>disable_sanitize_html</code>的值修改为<code>true</code></p></li>
+
+<li><p>传递环境变量（推荐）</p>
+
+<p>container启动时定义的环境变量会覆盖配置文件，所以推荐使用环境变量的形式进行设置</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight yaml language-yaml">
+  <figcaption>
+    
+      <span>yaml</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-yaml"><code class="yaml">    ...
+    services:
+        grafana:
+        image: &#39;grafana/grafana&#39;
+        container_name: &#39;grafana&#39;
+        restart: &#39;unless-stopped&#39;    # no, unless-stopped, always, on-failure:&lt;max-retries&gt;
+        privileged: false
+        ports:
+            - &#39;3000:3000&#39;
+        volumes:
+            - &#39;grafana:/var/lib/grafana&#39;
+        networks:
+            data: {}
+        environment:
+            TZ: &#39;Asia/Shanghai&#39;
+            GF_PANELS_DISABLE_SANITIZE_HTML: &#39;true&#39;     # 启用html注入
+    ...
+    </code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<div class="alert info ">
+  <p>使用<code>docker run</code>而非Compose的话用<code>-e</code>参数设置环境变量</p>
+</div></li>
+</ul>
+
+<p>配置文件或者compose file修改完成以后存在正在运行的grafana container的话则需要重新启动</p>
+
+<hr />
+
+<h1 id="修改title字体">修改title字体</h1>
+
+<p>确保修改后的配置项/环境变量作用到grafana后，接下来是修改Panel Title的字体</p>
+
+<ol>
+<li>在dashboard中新增一个Text类型的Panel，将&rsquo;Visualization&rsquo;-&lsquo;Mode&rsquo;的值改为&rsquo;html&rsquo;</li>
+</ol>
+
+
+ 
+  
+  
+  
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+  
+
+ 
+  
+  
+  
+  
+    
+  
+    
+      
+    
+  
+
+<div class="figure center" >
+  
+    <a class="fancybox" href="https://gitee.com/YJ1516/MyPic/raw/master/picgo/add_text_panel.png" title="Add Text Panel" data-fancybox-group="group:grafana">
+  
+    <img class="fig-img" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/add_text_panel.png" style="width: 100%;height: 100%;" alt="Add Text Panel">
+  
+    </a>
+  
+   
+    <span class="caption">Add Text Panel</span>
+  
+</div>
+
+  <div style="clear:both;"></div>
+
+
+<ol>
+<li>将如下CSS代码写入文本框</li>
+</ol>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight css language-css">
+  <figcaption>
+    
+      <span>css</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-css"><code class="css">&lt;style&gt;
+.panel-title-text {
+font-size: 30px;
+}
+.panel-container {
+height: 100%;
+}
+&lt;/style&gt;</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+
+ 
+  
+  
+  
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+  
+
+ 
+  
+  
+  
+  
+    
+  
+    
+      
+    
+  
+
+<div class="figure center" >
+  
+    <a class="fancybox" href="https://gitee.com/YJ1516/MyPic/raw/master/picgo/add_css_code.png" title="Add CSS Code" data-fancybox-group="group:grafana">
+  
+    <img class="fig-img" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/add_css_code.png" style="width: 100%;height: 100%;" alt="Add CSS Code">
+  
+    </a>
+  
+   
+    <span class="caption">Add CSS Code</span>
+  
+</div>
+
+  <div style="clear:both;"></div>
+
+
+<ol>
+<li>最小&amp;透明化Text Panel</li>
+</ol>
+
+<p>因为这个Text Panel只是用来设置panel title的，所以要尽量让它“隐身”</p>
+
+<p>将&rsquo;General&rsquo;按照如下图所示配置：</p>
+
+
+ 
+  
+  
+  
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+  
+
+ 
+  
+  
+  
+  
+    
+  
+    
+      
+    
+  
+
+<div class="figure center" >
+  
+    <a class="fancybox" href="https://gitee.com/YJ1516/MyPic/raw/master/picgo/modify_general.png" title="Modify General" data-fancybox-group="group:grafana">
+  
+    <img class="fig-img" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/modify_general.png" style="width: 100%;height: 100%;" alt="Modify General">
+  
+    </a>
+  
+   
+    <span class="caption">Modify General</span>
+  
+</div>
+
+  <div style="clear:both;"></div>
+
+
+<p>配置完以后返回到dashboard界面，将Text Panel的大小调到最小，然后找个角落“藏着”它即可</p>
+
+
+ 
+  
+  
+  
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+  
+
+ 
+  
+  
+  
+  
+    
+  
+    
+      
+    
+  
+
+<div class="figure center" >
+  
+    <a class="fancybox" href="https://gitee.com/YJ1516/MyPic/raw/master/picgo/ok.png" title="OK" data-fancybox-group="group:grafana">
+  
+    <img class="fig-img" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/ok.png" style="width: 100%;height: 100%;" alt="OK">
+  
+    </a>
+  
+   
+    <span class="caption">OK</span>
+  
+</div>
+
+  <div style="clear:both;"></div>
+
+
+<p>不论是添加Text Panel之前还是之后的Panel，它们的Title字体都会变大，如上图所示（红色框里的就是“隐身”的Text Panel）</p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://yj1516.top/tags/grafana/">grafana</a>
+
+  <a class="tag tag--primary tag--small" href="https://yj1516.top/tags/font/">font</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2019/10/%E8%A7%A3%E5%86%B3sddm%E4%B8%BB%E9%A2%98%E6%8A%A5qtquick.controls%E6%9C%AA%E5%AE%89%E8%A3%85%E7%9A%84%E9%94%99%E8%AF%AF/" data-tooltip="解决sddm主题报QtQuick.Controls未安装的错误">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2019/11/%E8%B0%83%E6%95%B4docker%E7%9A%84log%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/" data-tooltip="调整docker的log配置参数">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yj1516.top/2019/11/grafana%E8%B0%83%E6%95%B4panel%E7%9A%84title%E5%AD%97%E4%BD%93%E5%A4%A7%E5%B0%8F/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yj1516.top/2019/11/grafana%E8%B0%83%E6%95%B4panel%E7%9A%84title%E5%AD%97%E4%BD%93%E5%A4%A7%E5%B0%8F/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#table-of-contents">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 <a href="https://github.com/YHYJ">YHYJ</a>. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2019/10/%E8%A7%A3%E5%86%B3sddm%E4%B8%BB%E9%A2%98%E6%8A%A5qtquick.controls%E6%9C%AA%E5%AE%89%E8%A3%85%E7%9A%84%E9%94%99%E8%AF%AF/" data-tooltip="解决sddm主题报QtQuick.Controls未安装的错误">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2019/11/%E8%B0%83%E6%95%B4docker%E7%9A%84log%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/" data-tooltip="调整docker的log配置参数">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yj1516.top/2019/11/grafana%E8%B0%83%E6%95%B4panel%E7%9A%84title%E5%AD%97%E4%BD%93%E5%A4%A7%E5%B0%8F/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yj1516.top/2019/11/grafana%E8%B0%83%E6%95%B4panel%E7%9A%84title%E5%AD%97%E4%BD%93%E5%A4%A7%E5%B0%8F/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#table-of-contents">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fyj1516.top%2F2019%2F11%2Fgrafana%25E8%25B0%2583%25E6%2595%25B4panel%25E7%259A%2584title%25E5%25AD%2597%25E4%25BD%2593%25E5%25A4%25A7%25E5%25B0%258F%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fyj1516.top%2F2019%2F11%2Fgrafana%25E8%25B0%2583%25E6%2595%25B4panel%25E7%259A%2584title%25E5%25AD%2597%25E4%25BD%2593%25E5%25A4%25A7%25E5%25B0%258F%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">YJ</h4>
+    
+      <div id="about-card-bio"><em>猫奴</em> <em>闲人</em></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Developer
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    <div id="cover" style="background-image:url('https://gitee.com/YJ1516/MyPic/raw/master/picgo/cover.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://yj1516.top/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+  
+    <script src="https://yj1516.top/js/script-clicklove.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous"  integrity="sha256-t2wP3gOvuWRLVSKRJIswwZfaFz3JudrtJwLumaoMaWU=" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous"  integrity="sha256-UWMcoo+ry/Db1ZV0LMo6wbJHnpTUShrVeeWIbfC3ZJw=" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/rust.min.js"></script>
+  
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/yj1516.top\/2019\/11\/grafana%E8%B0%83%E6%95%B4panel%E7%9A%84title%E5%AD%97%E4%BD%93%E5%A4%A7%E5%B0%8F\/';
+          
+            this.page.identifier = '\/2019\/11\/grafana%E8%B0%83%E6%95%B4panel%E7%9A%84title%E5%AD%97%E4%BD%93%E5%A4%A7%E5%B0%8F\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'yj1516';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.77.0 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="author" content="YJ">
+<meta name="keywords" content="tech, development, next-gen">
+<meta name="description" content="docker默认的配置并不会限制log文件的大小，这导致了我的NanoPi-R1自带的eMMC(8G)在短短4天内就被log文件撑满了&hellip;&hellip;">
+
+
+<meta property="og:description" content="docker默认的配置并不会限制log文件的大小，这导致了我的NanoPi-R1自带的eMMC(8G)在短短4天内就被log文件撑满了&hellip;&hellip;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="调整docker的log配置参数">
+<meta name="twitter:title" content="调整docker的log配置参数">
+<meta property="og:url" content="https://yj1516.top/2019/11/%E8%B0%83%E6%95%B4docker%E7%9A%84log%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">
+<meta property="twitter:url" content="https://yj1516.top/2019/11/%E8%B0%83%E6%95%B4docker%E7%9A%84log%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">
+<meta property="og:site_name" content="Time">
+<meta property="og:description" content="docker默认的配置并不会限制log文件的大小，这导致了我的NanoPi-R1自带的eMMC(8G)在短短4天内就被log文件撑满了&hellip;&hellip;">
+<meta name="twitter:description" content="docker默认的配置并不会限制log文件的大小，这导致了我的NanoPi-R1自带的eMMC(8G)在短短4天内就被log文件撑满了&hellip;&hellip;">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2019-11-04T10:13:11">
+  
+  
+    <meta property="article:modified_time" content="2019-11-04T10:13:11">
+  
+  
+  
+    
+      <meta property="article:section" content="容器">
+    
+      <meta property="article:section" content="docker">
+    
+  
+  
+    
+      <meta property="article:tag" content="docker">
+    
+      <meta property="article:tag" content="容器">
+    
+      <meta property="article:tag" content="compose">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://i.loli.net/2019/11/05/6gjLtWly2uoq1UH.jpg">
+  <meta property="twitter:image" content="https://i.loli.net/2019/11/05/6gjLtWly2uoq1UH.jpg">
+
+
+  <meta property="og:image" content="https://i.loli.net/2019/11/04/wSrfcARzQp9ymqn.jpg">
+  <meta property="twitter:image" content="https://i.loli.net/2019/11/04/wSrfcARzQp9ymqn.jpg">
+
+
+
+
+  <meta property="og:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg">
+  <meta property="twitter:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg">
+
+
+    <title>调整docker的log配置参数</title>
+
+    <link rel="icon" href="https://gitee.com/YJ1516/MyPic/raw/master/picgo/favicon.jpg">
+    
+
+    
+
+    <link rel="canonical" href="https://yj1516.top/2019/11/%E8%B0%83%E6%95%B4docker%E7%9A%84log%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://yj1516.top/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-150098882-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://yj1516.top/">Time</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://yj1516.top/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://yj1516.top/#about">
+          <img class="sidebar-profile-picture" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">YJ</h4>
+        
+          <h5 class="sidebar-profile-bio"><em>猫奴</em> <em>闲人</em></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/YHYJ" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              post-header-cover--full"
+       style="background-image:url('https://i.loli.net/2019/11/04/wSrfcARzQp9ymqn.jpg')"
+       data-behavior="5">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      调整docker的log配置参数
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2019-11-04T10:13:11&#43;08:00">
+        
+  
+  
+  
+  
+    2019-11-4
+  
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://yj1516.top/categories/%e5%ae%b9%e5%99%a8">容器</a>, 
+    
+      <a class="category-link" href="https://yj1516.top/categories/docker">docker</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="5"
+        class="hasCover
+               hasCoverMetaIn
+               hasCoverCaption">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+            <span class="post-header-cover-caption caption">活下去</span>
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>docker默认的配置并不会限制log文件的大小，这导致了我的NanoPi-R1自带的eMMC(8G)在短短4天内就被log文件撑满了&hellip;&hellip;</p>
+
+<h1 id="table-of-contents">Table of Contents</h1><nav id="TableOfContents">
+<ul>
+<li><a href="#前言">前言</a></li>
+<li><a href="#经过">经过</a>
+<ul>
+<li><a href="#查找原因">查找原因</a>
+<ul>
+<li><a href="#docker命令查看">docker命令查看</a></li>
+<li><a href="#直接查看docker文件夹">直接查看docker文件夹</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#解决">解决</a>
+<ul>
+<li><a href="#docker支持的log驱动">docker支持的log驱动</a></li>
+<li><a href="#设置log驱动">设置log驱动</a></li>
+</ul></li>
+</ul>
+</nav>
+
+<h1 id="前言">前言</h1>
+
+<p>我把系统烧写到了一张16G的TF卡上，<span class="highlight-text success">NanoPi-R1</span>（以下简称R1）自带的eMMC(8G)挂载到<code>/data</code>专门用来存放docker数据（image、container、volume、log&hellip;），
+因为R1是有特定用途的，所以里面只有<span class="highlight-text cyan">redis:latest</span>、<span class="highlight-text cyan">influxdb:latest</span>和一个<span class="highlight-text cyan">自制的350M+的image</span>，总大小在<span class="highlight-text red">600-700M</span>之间，<span class="highlight-text red">剩余6G</span>的空间用来存放docker的其他数据，我原以为是完全够用的……</p>
+
+<hr />
+
+<h1 id="经过">经过</h1>
+
+<p>周五下午，我在R1上跑了5个Compose，分别从5个IP获取数据，每个Compose有3个container，这5个Compose除了数据源的IP外完全一样，每个Compose都有grafana监控页面</p>
+
+<p>周末完全没有管它……</p>
+
+<p>周一下午，看了一眼grafana，数据正常……</p>
+
+<p>周二下午，grafana上只有#5 Compose有数据了！ssh连接R1也是失败的，只好直接断电才登录了上去，<code>df -h</code>一看
+<div class="alert warning ">
+  <p>eMMC已经被塞满了</p>
+</div>
+因为eMMC上只有docker的数据，所以直接从docker查找原因</p>
+
+<h2 id="查找原因">查找原因</h2>
+
+<div class="alert info no-icon ">
+  <p>当时排查R1的时候忘了截图，只能看示例图了……</p>
+</div>
+
+<h3 id="docker命令查看">docker命令查看</h3>
+
+<p>运行：</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight bash language-bash">
+  <figcaption>
+    
+      <span>bash</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-bash"><code class="bash">docker system df</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<p>能够得到Images、Containers、Local Volumes、Build Cache的TOTAL、ACTIVE、SIZE、RECLAIMABLE信息</p>
+
+<p>或者运行：</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight bash language-bash">
+  <figcaption>
+    
+      <span>bash</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-bash"><code class="bash">docker ps -s</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<p>可以单独查看container的SIZE</p>
+
+<p>输出如下：</p>
+
+
+ 
+  
+  
+  
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+  
+
+ 
+  
+  
+  
+  
+    
+  
+    
+      
+    
+  
+
+<div class="figure center" >
+  
+    <a class="fancybox" href="https://gitee.com/YJ1516/MyPic/raw/master/picgo/docker_system_df_r1.png" title="docker system df" data-fancybox-group="group:docker">
+  
+    <img class="fig-img" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/docker_system_df_r1.png" style="width: 100%;height: 100%;" alt="docker system df">
+  
+    </a>
+  
+   
+    <span class="caption">docker system df</span>
+  
+</div>
+
+  <div style="clear:both;"></div>
+
+
+<p>从上图可知docker占用的空间并不多</p>
+
+<p>这种情况明显是这两个命令没有查出docker到底在哪里占用了大量空间</p>
+
+<p>docker命令查找不出来，只能直接查看docker的文件夹了</p>
+
+<h3 id="直接查看docker文件夹">直接查看docker文件夹</h3>
+
+<p>运行以下命令按大小排序docker文件夹：</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight bash language-bash">
+  <figcaption>
+    
+      <span>bash</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-bash"><code class="bash">du -h --max-depth=1 /data/docker | sort -h</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<p>输出如下：</p>
+
+
+ 
+  
+  
+  
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+  
+
+ 
+  
+  
+  
+  
+    
+  
+    
+      
+    
+  
+
+<div class="figure center" >
+  
+    <a class="fancybox" href="https://gitee.com/YJ1516/MyPic/raw/master/picgo/du_docker.png" title="du" data-fancybox-group="group:du">
+  
+    <img class="fig-img" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/du_docker.png" style="width: 100%;height: 100%;" alt="du">
+  
+    </a>
+  
+   
+    <span class="caption">du</span>
+  
+</div>
+
+  <div style="clear:both;"></div>
+
+
+<p>其中<strong>overlay2</strong>是docker使用的文件系统，不要碰它</p>
+
+<p>在我的R1中，containers文件夹大小达到了4G+，这显然是不正常的，考虑到3个container中有1个会输出大量log，怀疑是log文件占用了大量空间</p>
+
+<p>到<code>/data/docker/containers/XXXXXX</code>文件夹下一看，果然有一个名为<code>XXXXXX-json.log</code>的文件达到了1G左右</p>
+
+<div class="alert info ">
+  <p>其中XXXXXX是对应container的ID</p>
+</div>
+
+<p>这样1×5=5G，加上overlay2和images占用的空间，eMMC已经完全满了！</p>
+
+<hr />
+
+<h1 id="解决">解决</h1>
+
+<p>确定了问题的原因，只要限制一下docker的log的大小即可</p>
+
+<p>官方文档<a href="https://docs.docker.com/config/containers/logging/configure/">docker logging configure</a>对docker log的配置进行了解释</p>
+
+<h2 id="docker支持的log驱动">docker支持的log驱动</h2>
+
+<table>
+<thead>
+<tr>
+<th>Driver</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>none</code></td>
+<td>不启用log功能，<code>docker logs</code>不会有任何输出</td>
+</tr>
+
+<tr>
+<td><code>local</code></td>
+<td>使用自定义格式的log,旨在最大限度的减少开支</td>
+</tr>
+
+<tr>
+<td><code>json-file</code></td>
+<td>JSON格式log，这是docker的默认log驱动</td>
+</tr>
+
+<tr>
+<td><code>syslog</code></td>
+<td>Linux的系统log服务，必须保证syslogd在宿主机上已运行</td>
+</tr>
+
+<tr>
+<td><code>journald</code></td>
+<td>systemd的log服务，可以代替syslog服务</td>
+</tr>
+
+<tr>
+<td><code>gelf</code></td>
+<td>将log写入graylog端点</td>
+</tr>
+
+<tr>
+<td><code>fluentd</code></td>
+<td>将log写入fluentd，必须保证fluentd在宿主机上已运行</td>
+</tr>
+
+<tr>
+<td><code>awslogs</code></td>
+<td>将log写入Amazon CloudWatch Logs</td>
+</tr>
+
+<tr>
+<td><code>splunk</code></td>
+<td>使用HTTP Event Collector将log写入splunk</td>
+</tr>
+
+<tr>
+<td><code>etwlogs</code></td>
+<td>将log写为Event Tracing for Windows (ETW)事件，仅适用于Windows平台</td>
+</tr>
+
+<tr>
+<td><code>gcplogs</code></td>
+<td>将log写入Google Cloud Platform (GCP)</td>
+</tr>
+
+<tr>
+<td><code>logentries</code></td>
+<td>将log写入Rapid7 Logentries</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="设置log驱动">设置log驱动</h2>
+
+<p>docker默认的log驱动是json-file，使用以下命令查看当前log驱动：</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight bash language-bash">
+  <figcaption>
+    
+      <span>bash</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-bash"><code class="bash">docker info --format &#39;{{.LoggingDriver}}&#39;</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<p>有2种方法设置docker的log驱动（还有一种配置dockerd的方法，但极其不推荐，所以不写）：</p>
+
+<ol>
+<li><p>配置daemon.json（不推荐这种方法，不灵活）</p>
+
+<p>文件路径：</p>
+
+<p><span class="highlight-text success">Linux：`/etc/docker/daemon.json`</span>
+<br />
+<span class="highlight-text primary">Windows：`C:\ProgramData\docker\config\daemon.json`</span></p>
+
+<p>如果使用的驱动有可配置项也可以在daemon.json里配置：</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight  json language- json">
+  <figcaption>
+    
+      <span>json</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language- json"><code class=" json">    {
+        &#34;log-driver&#34;: &#34;json-file&#34;,
+        &#34;log-opts&#34;: {
+        &#34;max-size&#34;: &#34;10m&#34;,
+        &#34;max-file&#34;: &#34;3&#34;,
+        &#34;labels&#34;: &#34;production_status&#34;,
+        &#34;tag&#34;: &#34;{{.Name}}/{{.ID}}/{{.ImageName}}/{{.ImageID}}&#34;
+    }
+    </code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<p>以上示例中：</p>
+
+<ul>
+<li><code>log-driver</code>：设置驱动为json-file</li>
+<li><code>log-opts</code>是驱动的配置项</li>
+<li><code>max-size</code>：设置单个log文件的最大尺寸</li>
+<li><code>max-file</code>：设置log文件的最大数量</li>
+<li><code>labels</code>：设置log的label，用于log收集工具的数据处理</li>
+<li><code>tag</code>：指定按照什么格式在log中记录container本身的的信息，详见<a href="https://docs.docker.com/v17.09/engine/admin/logging/log_tags/">logging/log_tags</a></li>
+</ul></li>
+
+<li><p>配置docker0compose.yml（推荐，为每个service灵活定制log选项）</p>
+
+<p>在每个service下添加如下代码，即可定制每个service的log选项：</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight  json language- json">
+  <figcaption>
+    
+      <span>json</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language- json"><code class=" json">    ...
+        labels:
+            &lt;label_name&gt;: &#34;&lt;label_value&gt;&#34;
+        logging:
+            driver: &#34;json-file&#34;
+            options:
+            labels: &#34;&lt;label_name&gt;&#34;
+            tag: &#34;{{.Name}}/{{.ID}}/{{.ImageName}}/{{.ImageID}}&#34;
+            max-size: &#34;10m&#34;
+            max-file: &#34;10&#34;
+    ...
+    </code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure></li>
+</ol>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://yj1516.top/tags/docker/">docker</a>
+
+  <a class="tag tag--primary tag--small" href="https://yj1516.top/tags/%E5%AE%B9%E5%99%A8/">容器</a>
+
+  <a class="tag tag--primary tag--small" href="https://yj1516.top/tags/compose/">compose</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2019/11/grafana%E8%B0%83%E6%95%B4panel%E7%9A%84title%E5%AD%97%E4%BD%93%E5%A4%A7%E5%B0%8F/" data-tooltip="Grafana调整Panel的Title字体大小">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2019/11/rust%E9%85%8D%E7%BD%AE%E5%9B%BD%E5%86%85%E6%BA%90/" data-tooltip="Rust配置国内源">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yj1516.top/2019/11/%E8%B0%83%E6%95%B4docker%E7%9A%84log%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yj1516.top/2019/11/%E8%B0%83%E6%95%B4docker%E7%9A%84log%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#table-of-contents">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 <a href="https://github.com/YHYJ">YHYJ</a>. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2019/11/grafana%E8%B0%83%E6%95%B4panel%E7%9A%84title%E5%AD%97%E4%BD%93%E5%A4%A7%E5%B0%8F/" data-tooltip="Grafana调整Panel的Title字体大小">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2019/11/rust%E9%85%8D%E7%BD%AE%E5%9B%BD%E5%86%85%E6%BA%90/" data-tooltip="Rust配置国内源">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yj1516.top/2019/11/%E8%B0%83%E6%95%B4docker%E7%9A%84log%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yj1516.top/2019/11/%E8%B0%83%E6%95%B4docker%E7%9A%84log%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#table-of-contents">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fyj1516.top%2F2019%2F11%2F%25E8%25B0%2583%25E6%2595%25B4docker%25E7%259A%2584log%25E9%2585%258D%25E7%25BD%25AE%25E5%258F%2582%25E6%2595%25B0%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fyj1516.top%2F2019%2F11%2F%25E8%25B0%2583%25E6%2595%25B4docker%25E7%259A%2584log%25E9%2585%258D%25E7%25BD%25AE%25E5%258F%2582%25E6%2595%25B0%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">YJ</h4>
+    
+      <div id="about-card-bio"><em>猫奴</em> <em>闲人</em></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Developer
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    <div id="cover" style="background-image:url('https://gitee.com/YJ1516/MyPic/raw/master/picgo/cover.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://yj1516.top/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+  
+    <script src="https://yj1516.top/js/script-clicklove.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous"  integrity="sha256-t2wP3gOvuWRLVSKRJIswwZfaFz3JudrtJwLumaoMaWU=" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous"  integrity="sha256-UWMcoo+ry/Db1ZV0LMo6wbJHnpTUShrVeeWIbfC3ZJw=" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/rust.min.js"></script>
+  
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/yj1516.top\/2019\/11\/%E8%B0%83%E6%95%B4docker%E7%9A%84log%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0\/';
+          
+            this.page.identifier = '\/2019\/11\/%E8%B0%83%E6%95%B4docker%E7%9A%84log%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'yj1516';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

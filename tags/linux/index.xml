@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linux on Time</title>
+    <link>https://yj1516.top/tags/linux/</link>
+    <description>Recent content in linux on Time</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 01 Nov 2020 16:39:00 +0800</lastBuildDate><atom:link href="https://yj1516.top/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>先装Linux后装Windows的引导问题</title>
+      <link>https://yj1516.top/2020/11/%E5%85%88%E8%A3%85linux%E5%90%8E%E8%A3%85windows%E7%9A%84%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Sun, 01 Nov 2020 16:39:00 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2020/11/%E5%85%88%E8%A3%85linux%E5%90%8E%E8%A3%85windows%E7%9A%84%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98/</guid>
+      <description>&lt;p&gt;双系统(Linux/Windows)环境下重装Windows的注意事项&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Debian系的网络配置</title>
+      <link>https://yj1516.top/2020/01/debian%E7%B3%BB%E7%9A%84%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/</link>
+      <pubDate>Wed, 15 Jan 2020 13:13:34 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2020/01/debian%E7%B3%BB%E7%9A%84%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/</guid>
+      <description>&lt;p&gt;debian系使用NetworkManager配合networking为wifi设置静态IP的办法&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>OverlayFs</title>
+      <link>https://yj1516.top/2019/10/overlayfs/</link>
+      <pubDate>Fri, 18 Oct 2019 09:54:13 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2019/10/overlayfs/</guid>
+      <description>&lt;p&gt;OverlayFs(Overlay Filesystem)是Linux的一种文件系统——&lt;strong&gt;&lt;span class=&#34;highlight-text orange&#34;&gt;union mount filesystem（联合挂载文件系统）&lt;/span&gt;&lt;/strong&gt;，自Linux Kernal 3.18开始合并到linux内核中&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

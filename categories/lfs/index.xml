@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>LFS on Time</title>
+    <link>https://yj1516.top/categories/lfs/</link>
+    <description>Recent content in LFS on Time</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 31 Oct 2020 23:43:54 +0800</lastBuildDate><atom:link href="https://yj1516.top/categories/lfs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git LFS的使用方法</title>
+      <link>https://yj1516.top/2020/10/git-lfs%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Sat, 31 Oct 2020 23:43:54 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2020/10/git-lfs%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</guid>
+      <description>&lt;p&gt;LFS是一个Git扩展，在对大文件进行版本控制的同时保持仓库的体积不至于太大&lt;/p&gt;
+
+&lt;p&gt;Github仓库限制文件大小不能超过100MB，因此在包含大文件的仓库中使用LFS是很有必要的&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

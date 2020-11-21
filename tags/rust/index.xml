@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>rust on Time</title>
+    <link>https://yj1516.top/tags/rust/</link>
+    <description>Recent content in rust on Time</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 07 Nov 2019 11:45:02 +0800</lastBuildDate><atom:link href="https://yj1516.top/tags/rust/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Rust配置国内源</title>
+      <link>https://yj1516.top/2019/11/rust%E9%85%8D%E7%BD%AE%E5%9B%BD%E5%86%85%E6%BA%90/</link>
+      <pubDate>Thu, 07 Nov 2019 11:45:02 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2019/11/rust%E9%85%8D%E7%BD%AE%E5%9B%BD%E5%86%85%E6%BA%90/</guid>
+      <description>&lt;p&gt;rust的默认源位于国外，使用起来慢的很，要提升使用体验，就要更换为国内源&amp;hellip;&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

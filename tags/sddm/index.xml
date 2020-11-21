@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>sddm on Time</title>
+    <link>https://yj1516.top/tags/sddm/</link>
+    <description>Recent content in sddm on Time</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 29 Oct 2019 12:18:15 +0800</lastBuildDate><atom:link href="https://yj1516.top/tags/sddm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>解决sddm主题报QtQuick.Controls未安装的错误</title>
+      <link>https://yj1516.top/2019/10/%E8%A7%A3%E5%86%B3sddm%E4%B8%BB%E9%A2%98%E6%8A%A5qtquick.controls%E6%9C%AA%E5%AE%89%E8%A3%85%E7%9A%84%E9%94%99%E8%AF%AF/</link>
+      <pubDate>Tue, 29 Oct 2019 12:18:15 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2019/10/%E8%A7%A3%E5%86%B3sddm%E4%B8%BB%E9%A2%98%E6%8A%A5qtquick.controls%E6%9C%AA%E5%AE%89%E8%A3%85%E7%9A%84%E9%94%99%E8%AF%AF/</guid>
+      <description>&lt;p&gt;当sddm报&lt;code&gt;QtQuick.Controls&lt;/code&gt;错误的时候，后期设置的sddm theme就会失效，变为默认theme（chiou）&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

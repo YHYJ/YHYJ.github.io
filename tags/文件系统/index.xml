@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>文件系统 on Time</title>
+    <link>https://yj1516.top/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/</link>
+    <description>Recent content in 文件系统 on Time</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 18 Oct 2019 09:54:13 +0800</lastBuildDate><atom:link href="https://yj1516.top/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OverlayFs</title>
+      <link>https://yj1516.top/2019/10/overlayfs/</link>
+      <pubDate>Fri, 18 Oct 2019 09:54:13 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2019/10/overlayfs/</guid>
+      <description>&lt;p&gt;OverlayFs(Overlay Filesystem)是Linux的一种文件系统——&lt;strong&gt;&lt;span class=&#34;highlight-text orange&#34;&gt;union mount filesystem（联合挂载文件系统）&lt;/span&gt;&lt;/strong&gt;，自Linux Kernal 3.18开始合并到linux内核中&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

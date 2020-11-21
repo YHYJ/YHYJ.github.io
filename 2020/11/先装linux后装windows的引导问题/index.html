@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.77.0 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="author" content="YJ">
+<meta name="keywords" content="Bootloader, development, next-gen">
+<meta name="description" content="双系统(Linux/Windows)环境下重装Windows的注意事项">
+
+
+<meta property="og:description" content="双系统(Linux/Windows)环境下重装Windows的注意事项">
+<meta property="og:type" content="article">
+<meta property="og:title" content="先装Linux后装Windows的引导问题">
+<meta name="twitter:title" content="先装Linux后装Windows的引导问题">
+<meta property="og:url" content="https://yj1516.top/2020/11/%E5%85%88%E8%A3%85linux%E5%90%8E%E8%A3%85windows%E7%9A%84%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98/">
+<meta property="twitter:url" content="https://yj1516.top/2020/11/%E5%85%88%E8%A3%85linux%E5%90%8E%E8%A3%85windows%E7%9A%84%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98/">
+<meta property="og:site_name" content="Time">
+<meta property="og:description" content="双系统(Linux/Windows)环境下重装Windows的注意事项">
+<meta name="twitter:description" content="双系统(Linux/Windows)环境下重装Windows的注意事项">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2020-11-01T16:39:00">
+  
+  
+    <meta property="article:modified_time" content="2020-11-01T16:39:00">
+  
+  
+  
+    
+      <meta property="article:section" content="System">
+    
+      <meta property="article:section" content="Bootloader">
+    
+  
+  
+    
+      <meta property="article:tag" content="system">
+    
+      <meta property="article:tag" content="bootloader">
+    
+      <meta property="article:tag" content="linux">
+    
+      <meta property="article:tag" content="windows">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/20201101_165119.png">
+  <meta property="twitter:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/20201101_165119.png">
+
+
+  <meta property="og:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Arch_1920x1080.jpeg">
+  <meta property="twitter:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Arch_1920x1080.jpeg">
+
+
+
+
+  <meta property="og:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg">
+  <meta property="twitter:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg">
+
+
+    <title>先装Linux后装Windows的引导问题</title>
+
+    <link rel="icon" href="https://gitee.com/YJ1516/MyPic/raw/master/picgo/favicon.jpg">
+    
+
+    
+
+    <link rel="canonical" href="https://yj1516.top/2020/11/%E5%85%88%E8%A3%85linux%E5%90%8E%E8%A3%85windows%E7%9A%84%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://yj1516.top/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-150098882-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://yj1516.top/">Time</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://yj1516.top/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://yj1516.top/#about">
+          <img class="sidebar-profile-picture" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">YJ</h4>
+        
+          <h5 class="sidebar-profile-bio"><em>猫奴</em> <em>闲人</em></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/YHYJ" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              post-header-cover--full"
+       style="background-image:url('https://gitee.com/YJ1516/MyPic/raw/master/picgo/Arch_1920x1080.jpeg')"
+       data-behavior="5">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      先装Linux后装Windows的引导问题
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2020-11-01T16:39:00&#43;08:00">
+        
+  
+  
+  
+  
+    2020-11-1
+  
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://yj1516.top/categories/system">System</a>, 
+    
+      <a class="category-link" href="https://yj1516.top/categories/bootloader">Bootloader</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="5"
+        class="hasCover
+               hasCoverMetaIn
+               hasCoverCaption">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+            <span class="post-header-cover-caption caption">Arch Linux</span>
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>双系统(Linux/Windows)环境下重装Windows的注意事项</p>
+
+<p>系统：</p>
+
+<ul>
+<li>Arch Linux
+
+<ul>
+<li>Bootloader：systemd-boot</li>
+</ul></li>
+<li>Windows 10
+
+<ul>
+<li>Bootloader：Windows Boot Manager</li>
+</ul></li>
+</ul>
+
+<p>名词解释：</p>
+
+<ul>
+<li>ESP：即EFI System Partition，EFI系统分区</li>
+<li>bootloader：bootstrap loader，引导加载程序</li>
+</ul>
+
+<h1 id="table-of-contents">Table of Contents</h1><nav id="TableOfContents">
+<ul>
+<li><a href="#关于bootloader">关于bootloader</a></li>
+<li><a href="#systemd-boot">systemd-boot</a></li>
+<li><a href="#先装linux后装windows时对esp的要求">先装Linux后装Windows时对ESP的要求</a></li>
+<li><a href="#对windows-boot-manager的处理">对Windows Boot Manager的处理</a></li>
+</ul>
+</nav>
+
+<h1 id="关于bootloader">关于bootloader</h1>
+
+<p>Linux下有多款bootloader可选，包括systemd-boot、grub等，而Windows只有自带的bootloader叫做Windows Boot Manager</p>
+
+<h1 id="systemd-boot">systemd-boot</h1>
+
+<p>systemd-boot属于systemd的一个组件，因为系统/服务管理器使用的是systemd，不用像使用grub一样还要单独安装软件包</p>
+
+<p><code>bootctl</code>命令用于安装/更新/删除systemd-boot条目(entry)，常用参数有：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">## Boot Loader本身相关命令</span>
+<span style="color:#75715e"># 在ESP和EFI变量中安装systemd-boot</span>
+bootctl install
+<span style="color:#75715e"># 更新ESP和EFI变量中的systemd-boot</span>
+bootctl update
+<span style="color:#75715e"># 从ESP和EFI变量中删除systemd-boot</span>
+bootctl remove
+<span style="color:#75715e"># 显示已安装的systemd-boot和EFI变量的状态</span>
+bootctl status
+
+<span style="color:#75715e">## Boot Loader条目相关命令</span>
+<span style="color:#75715e"># 列出所有条目</span>
+bootctl list
+<span style="color:#75715e"># 设置默认引导的条目</span>
+bootctl set-default ID</code></pre></div>
+<h1 id="先装linux后装windows时对esp的要求">先装Linux后装Windows时对ESP的要求</h1>
+
+<p>安装Linux的时候需要设置ESP，该分区需要满足以下条件：</p>
+
+<ul>
+<li><p>分区类型为<strong>EFI System</strong>（中文环境下是<strong>EFI 系统</strong>）</p>
+
+<blockquote>
+<p>ID = 1</p>
+
+<p>UUID = C12A7328-F81F-11D2-BA4B-00A0C93EC93B</p>
+</blockquote></li>
+
+<li><p>文件系统是<strong>vfat</strong></p></li>
+
+<li><p>挂载点最好是<code>/boot</code></p></li>
+
+<li><p>大小尽量在150M～500M之间</p></li>
+</ul>
+
+<p>以上条件前两条满足时再安装Windows即可自动将其Bootloader放到该分区（注意安装Windows的时候不要把这个分区格式化了）</p>
+
+<blockquote>
+<p>第3条是Linux的要求（但不是强制的）</p>
+
+<p>第4条是个人建议，如果以后在Linux下要用<code>fwupd</code>更新固件，因为<code>fwupd</code>是把新固件包缓存到ESP下的，分区太小的话很容易更新失败</p>
+</blockquote>
+
+<h1 id="对windows-boot-manager的处理">对Windows Boot Manager的处理</h1>
+
+<p>Windows“流氓”在安装完成后会自动调整BIOS的启动顺序，把Windows Boot Manager设置成第1位，导致开机自动进入Windows系统而不会进到系统选择界面</p>
+
+<p>只要在开机的时候进到BIOS，把ESP所在的硬盘调整为第1位即可</p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://yj1516.top/tags/system/">system</a>
+
+  <a class="tag tag--primary tag--small" href="https://yj1516.top/tags/bootloader/">bootloader</a>
+
+  <a class="tag tag--primary tag--small" href="https://yj1516.top/tags/linux/">linux</a>
+
+  <a class="tag tag--primary tag--small" href="https://yj1516.top/tags/windows/">windows</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2020/11/%E6%9C%AC%E5%9C%B0%E6%9E%84%E5%BB%BA%E6%94%AF%E6%8C%81%E5%A4%9A%E6%9E%B6%E6%9E%84%E7%9A%84docker%E9%95%9C%E5%83%8F/" data-tooltip="本地构建支持多架构的Docker镜像">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yj1516.top/2020/11/%E5%85%88%E8%A3%85linux%E5%90%8E%E8%A3%85windows%E7%9A%84%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yj1516.top/2020/11/%E5%85%88%E8%A3%85linux%E5%90%8E%E8%A3%85windows%E7%9A%84%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#table-of-contents">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 <a href="https://github.com/YHYJ">YHYJ</a>. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2020/11/%E6%9C%AC%E5%9C%B0%E6%9E%84%E5%BB%BA%E6%94%AF%E6%8C%81%E5%A4%9A%E6%9E%B6%E6%9E%84%E7%9A%84docker%E9%95%9C%E5%83%8F/" data-tooltip="本地构建支持多架构的Docker镜像">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yj1516.top/2020/11/%E5%85%88%E8%A3%85linux%E5%90%8E%E8%A3%85windows%E7%9A%84%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yj1516.top/2020/11/%E5%85%88%E8%A3%85linux%E5%90%8E%E8%A3%85windows%E7%9A%84%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#table-of-contents">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fyj1516.top%2F2020%2F11%2F%25E5%2585%2588%25E8%25A3%2585linux%25E5%2590%258E%25E8%25A3%2585windows%25E7%259A%2584%25E5%25BC%2595%25E5%25AF%25BC%25E9%2597%25AE%25E9%25A2%2598%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fyj1516.top%2F2020%2F11%2F%25E5%2585%2588%25E8%25A3%2585linux%25E5%2590%258E%25E8%25A3%2585windows%25E7%259A%2584%25E5%25BC%2595%25E5%25AF%25BC%25E9%2597%25AE%25E9%25A2%2598%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">YJ</h4>
+    
+      <div id="about-card-bio"><em>猫奴</em> <em>闲人</em></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Developer
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    <div id="cover" style="background-image:url('https://gitee.com/YJ1516/MyPic/raw/master/picgo/cover.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://yj1516.top/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+  
+    <script src="https://yj1516.top/js/script-clicklove.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous"  integrity="sha256-t2wP3gOvuWRLVSKRJIswwZfaFz3JudrtJwLumaoMaWU=" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous"  integrity="sha256-UWMcoo+ry/Db1ZV0LMo6wbJHnpTUShrVeeWIbfC3ZJw=" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/rust.min.js"></script>
+  
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/yj1516.top\/2020\/11\/%E5%85%88%E8%A3%85linux%E5%90%8E%E8%A3%85windows%E7%9A%84%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98\/';
+          
+            this.page.identifier = '\/2020\/11\/%E5%85%88%E8%A3%85linux%E5%90%8E%E8%A3%85windows%E7%9A%84%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'yj1516';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

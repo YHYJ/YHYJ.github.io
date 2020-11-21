@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.77.0 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="author" content="YJ">
+<meta name="keywords" content="ssh, fix, development, next-gen">
+<meta name="description" content="某些Linux发行版默认ssh配置会导致连接用时过长，修改一个配置项即可修复该问题&hellip;&hellip;">
+
+
+<meta property="og:description" content="某些Linux发行版默认ssh配置会导致连接用时过长，修改一个配置项即可修复该问题&hellip;&hellip;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解决ssh连接用时过长问题">
+<meta name="twitter:title" content="解决ssh连接用时过长问题">
+<meta property="og:url" content="https://yj1516.top/2019/10/%E8%A7%A3%E5%86%B3ssh%E8%BF%9E%E6%8E%A5%E7%94%A8%E6%97%B6%E8%BF%87%E9%95%BF%E9%97%AE%E9%A2%98/">
+<meta property="twitter:url" content="https://yj1516.top/2019/10/%E8%A7%A3%E5%86%B3ssh%E8%BF%9E%E6%8E%A5%E7%94%A8%E6%97%B6%E8%BF%87%E9%95%BF%E9%97%AE%E9%A2%98/">
+<meta property="og:site_name" content="Time">
+<meta property="og:description" content="某些Linux发行版默认ssh配置会导致连接用时过长，修改一个配置项即可修复该问题&hellip;&hellip;">
+<meta name="twitter:description" content="某些Linux发行版默认ssh配置会导致连接用时过长，修改一个配置项即可修复该问题&hellip;&hellip;">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2019-10-17T15:01:16">
+  
+  
+    <meta property="article:modified_time" content="2019-10-17T15:01:16">
+  
+  
+  
+    
+      <meta property="article:section" content="bug">
+    
+      <meta property="article:section" content="fix">
+    
+  
+  
+    
+      <meta property="article:tag" content="ssh">
+    
+      <meta property="article:tag" content="fix">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Qmei.jpg">
+  <meta property="twitter:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Qmei.jpg">
+
+
+  <meta property="og:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/light_sky.jpg">
+  <meta property="twitter:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/light_sky.jpg">
+
+
+
+
+  <meta property="og:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg">
+  <meta property="twitter:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg">
+
+
+    <title>解决ssh连接用时过长问题</title>
+
+    <link rel="icon" href="https://gitee.com/YJ1516/MyPic/raw/master/picgo/favicon.jpg">
+    
+
+    
+
+    <link rel="canonical" href="https://yj1516.top/2019/10/%E8%A7%A3%E5%86%B3ssh%E8%BF%9E%E6%8E%A5%E7%94%A8%E6%97%B6%E8%BF%87%E9%95%BF%E9%97%AE%E9%A2%98/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://yj1516.top/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-150098882-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://yj1516.top/">Time</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://yj1516.top/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://yj1516.top/#about">
+          <img class="sidebar-profile-picture" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">YJ</h4>
+        
+          <h5 class="sidebar-profile-bio"><em>猫奴</em> <em>闲人</em></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/YHYJ" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              post-header-cover--full"
+       style="background-image:url('https://gitee.com/YJ1516/MyPic/raw/master/picgo/light_sky.jpg')"
+       data-behavior="5">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      解决ssh连接用时过长问题
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2019-10-17T15:01:16&#43;08:00">
+        
+  
+  
+  
+  
+    2019-10-17
+  
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://yj1516.top/categories/bug">bug</a>, 
+    
+      <a class="category-link" href="https://yj1516.top/categories/fix">fix</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="5"
+        class="hasCover
+               hasCoverMetaIn
+               hasCoverCaption">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+            <span class="post-header-cover-caption caption">黑暗是生命和文明之母</span>
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>某些Linux发行版默认ssh配置会导致连接用时过长，修改一个配置项即可修复该问题&hellip;&hellip;</p>
+
+<h1 id="table-of-contents">Table of Contents</h1><nav id="TableOfContents">
+<ul>
+<li><a href="#修改配置文件">修改配置文件</a></li>
+<li><a href="#重启服务">重启服务</a></li>
+</ul>
+</nav>
+
+<h1 id="修改配置文件">修改配置文件</h1>
+
+<p>ssh的服务端程序是<code>sshd</code>，它的默认配置文件是<code>/etc/ssh/sshd_config</code></p>
+
+<ol>
+<li><p>定位到如下行</p>
+
+
+  
+  
+  
+  
+
+
+<figure class="highlight  language-">
+  <figcaption>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-"><code class="">    ...
+    UseDNS yes
+    ...
+    </code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<div class="alert info ">
+  <p><code>UseDNS</code>选项用来指定是否应该对远程主机名进行反向解析以检查此主机名是否与其IP地址真实对应，这是一个耗时操作</p>
+</div>
+
+<p>该行可能是注释(开头是<code>#</code>)的，但只要<code>UseDNS</code>后面的值是<code>yes</code>，就代表该功能是开启状态</p></li>
+
+<li><p>关闭<code>UserDNS</code></p>
+
+<p>将<code>UseDNS</code>的值修改为<code>no</code></p>
+
+
+  
+  
+  
+  
+
+
+<figure class="highlight  language-">
+  <figcaption>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-"><code class="">    ...
+    UseDNS no
+    ...
+    </code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure></li>
+</ol>
+
+<hr />
+
+<h1 id="重启服务">重启服务</h1>
+
+<p>执行以下命令重启<code>sshd</code>服务：</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight bash language-bash">
+  <figcaption>
+    
+      <span>bash</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-bash"><code class="bash">systemctl restart sshd</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<hr />
+
+<p>OK，重启以后再次ssh连接该机器就不会出现耗时过长的问题了</p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://yj1516.top/tags/ssh/">ssh</a>
+
+  <a class="tag tag--primary tag--small" href="https://yj1516.top/tags/fix/">fix</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2019/10/hello-world/" data-tooltip="Hello World">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2019/10/overlayfs/" data-tooltip="OverlayFs">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yj1516.top/2019/10/%E8%A7%A3%E5%86%B3ssh%E8%BF%9E%E6%8E%A5%E7%94%A8%E6%97%B6%E8%BF%87%E9%95%BF%E9%97%AE%E9%A2%98/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yj1516.top/2019/10/%E8%A7%A3%E5%86%B3ssh%E8%BF%9E%E6%8E%A5%E7%94%A8%E6%97%B6%E8%BF%87%E9%95%BF%E9%97%AE%E9%A2%98/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#table-of-contents">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 <a href="https://github.com/YHYJ">YHYJ</a>. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2019/10/hello-world/" data-tooltip="Hello World">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2019/10/overlayfs/" data-tooltip="OverlayFs">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yj1516.top/2019/10/%E8%A7%A3%E5%86%B3ssh%E8%BF%9E%E6%8E%A5%E7%94%A8%E6%97%B6%E8%BF%87%E9%95%BF%E9%97%AE%E9%A2%98/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yj1516.top/2019/10/%E8%A7%A3%E5%86%B3ssh%E8%BF%9E%E6%8E%A5%E7%94%A8%E6%97%B6%E8%BF%87%E9%95%BF%E9%97%AE%E9%A2%98/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#table-of-contents">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fyj1516.top%2F2019%2F10%2F%25E8%25A7%25A3%25E5%2586%25B3ssh%25E8%25BF%259E%25E6%258E%25A5%25E7%2594%25A8%25E6%2597%25B6%25E8%25BF%2587%25E9%2595%25BF%25E9%2597%25AE%25E9%25A2%2598%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fyj1516.top%2F2019%2F10%2F%25E8%25A7%25A3%25E5%2586%25B3ssh%25E8%25BF%259E%25E6%258E%25A5%25E7%2594%25A8%25E6%2597%25B6%25E8%25BF%2587%25E9%2595%25BF%25E9%2597%25AE%25E9%25A2%2598%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">YJ</h4>
+    
+      <div id="about-card-bio"><em>猫奴</em> <em>闲人</em></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Developer
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    <div id="cover" style="background-image:url('https://gitee.com/YJ1516/MyPic/raw/master/picgo/cover.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://yj1516.top/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+  
+    <script src="https://yj1516.top/js/script-clicklove.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous"  integrity="sha256-t2wP3gOvuWRLVSKRJIswwZfaFz3JudrtJwLumaoMaWU=" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous"  integrity="sha256-UWMcoo+ry/Db1ZV0LMo6wbJHnpTUShrVeeWIbfC3ZJw=" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/rust.min.js"></script>
+  
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/yj1516.top\/2019\/10\/%E8%A7%A3%E5%86%B3ssh%E8%BF%9E%E6%8E%A5%E7%94%A8%E6%97%B6%E8%BF%87%E9%95%BF%E9%97%AE%E9%A2%98\/';
+          
+            this.page.identifier = '\/2019\/10\/%E8%A7%A3%E5%86%B3ssh%E8%BF%9E%E6%8E%A5%E7%94%A8%E6%97%B6%E8%BF%87%E9%95%BF%E9%97%AE%E9%A2%98\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'yj1516';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

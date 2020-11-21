@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Time</title>
+    <link>https://yj1516.top/</link>
+    <description>Recent content on Time</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 01 Nov 2020 16:39:00 +0800</lastBuildDate><atom:link href="https://yj1516.top/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>先装Linux后装Windows的引导问题</title>
+      <link>https://yj1516.top/2020/11/%E5%85%88%E8%A3%85linux%E5%90%8E%E8%A3%85windows%E7%9A%84%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Sun, 01 Nov 2020 16:39:00 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2020/11/%E5%85%88%E8%A3%85linux%E5%90%8E%E8%A3%85windows%E7%9A%84%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98/</guid>
+      <description>&lt;p&gt;双系统(Linux/Windows)环境下重装Windows的注意事项&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>本地构建支持多架构的Docker镜像</title>
+      <link>https://yj1516.top/2020/11/%E6%9C%AC%E5%9C%B0%E6%9E%84%E5%BB%BA%E6%94%AF%E6%8C%81%E5%A4%9A%E6%9E%B6%E6%9E%84%E7%9A%84docker%E9%95%9C%E5%83%8F/</link>
+      <pubDate>Sun, 01 Nov 2020 14:37:08 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2020/11/%E6%9C%AC%E5%9C%B0%E6%9E%84%E5%BB%BA%E6%94%AF%E6%8C%81%E5%A4%9A%E6%9E%B6%E6%9E%84%E7%9A%84docker%E9%95%9C%E5%83%8F/</guid>
+      <description>&lt;p&gt;在个人电脑构建支持amd64、arm和arm64的多架构镜像&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>不常用命令备忘录</title>
+      <link>https://yj1516.top/2020/11/%E4%B8%8D%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95/</link>
+      <pubDate>Sun, 01 Nov 2020 02:44:31 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2020/11/%E4%B8%8D%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95/</guid>
+      <description>&lt;p&gt;记录有用但不常用，容易忘记的命令&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Awesome Software</title>
+      <link>https://yj1516.top/2020/11/awesome-software/</link>
+      <pubDate>Sun, 01 Nov 2020 02:36:19 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2020/11/awesome-software/</guid>
+      <description>&lt;p&gt;常用优质软件列表&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Git LFS的使用方法</title>
+      <link>https://yj1516.top/2020/10/git-lfs%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Sat, 31 Oct 2020 23:43:54 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2020/10/git-lfs%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</guid>
+      <description>&lt;p&gt;LFS是一个Git扩展，在对大文件进行版本控制的同时保持仓库的体积不至于太大&lt;/p&gt;
+
+&lt;p&gt;Github仓库限制文件大小不能超过100MB，因此在包含大文件的仓库中使用LFS是很有必要的&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Debian系的网络配置</title>
+      <link>https://yj1516.top/2020/01/debian%E7%B3%BB%E7%9A%84%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/</link>
+      <pubDate>Wed, 15 Jan 2020 13:13:34 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2020/01/debian%E7%B3%BB%E7%9A%84%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/</guid>
+      <description>&lt;p&gt;debian系使用NetworkManager配合networking为wifi设置静态IP的办法&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Shell脚本输出控制码</title>
+      <link>https://yj1516.top/2019/11/shell%E8%84%9A%E6%9C%AC%E8%BE%93%E5%87%BA%E6%8E%A7%E5%88%B6%E7%A0%81/</link>
+      <pubDate>Mon, 25 Nov 2019 15:49:25 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2019/11/shell%E8%84%9A%E6%9C%AC%E8%BE%93%E5%87%BA%E6%8E%A7%E5%88%B6%E7%A0%81/</guid>
+      <description>&lt;p&gt;控制Shell脚本输出内容的格式，包括颜色、背景色、属性、光标&amp;hellip;&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Rust配置国内源</title>
+      <link>https://yj1516.top/2019/11/rust%E9%85%8D%E7%BD%AE%E5%9B%BD%E5%86%85%E6%BA%90/</link>
+      <pubDate>Thu, 07 Nov 2019 11:45:02 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2019/11/rust%E9%85%8D%E7%BD%AE%E5%9B%BD%E5%86%85%E6%BA%90/</guid>
+      <description>&lt;p&gt;rust的默认源位于国外，使用起来慢的很，要提升使用体验，就要更换为国内源&amp;hellip;&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>调整docker的log配置参数</title>
+      <link>https://yj1516.top/2019/11/%E8%B0%83%E6%95%B4docker%E7%9A%84log%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/</link>
+      <pubDate>Mon, 04 Nov 2019 10:13:11 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2019/11/%E8%B0%83%E6%95%B4docker%E7%9A%84log%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/</guid>
+      <description>&lt;p&gt;docker默认的配置并不会限制log文件的大小，这导致了我的NanoPi-R1自带的eMMC(8G)在短短4天内就被log文件撑满了&amp;hellip;&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Grafana调整Panel的Title字体大小</title>
+      <link>https://yj1516.top/2019/11/grafana%E8%B0%83%E6%95%B4panel%E7%9A%84title%E5%AD%97%E4%BD%93%E5%A4%A7%E5%B0%8F/</link>
+      <pubDate>Fri, 01 Nov 2019 13:30:42 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2019/11/grafana%E8%B0%83%E6%95%B4panel%E7%9A%84title%E5%AD%97%E4%BD%93%E5%A4%A7%E5%B0%8F/</guid>
+      <description>&lt;p&gt;grafana中panel的title默认字体很小，特别是投放到大屏上之后，基本处于看不清的状态&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>解决sddm主题报QtQuick.Controls未安装的错误</title>
+      <link>https://yj1516.top/2019/10/%E8%A7%A3%E5%86%B3sddm%E4%B8%BB%E9%A2%98%E6%8A%A5qtquick.controls%E6%9C%AA%E5%AE%89%E8%A3%85%E7%9A%84%E9%94%99%E8%AF%AF/</link>
+      <pubDate>Tue, 29 Oct 2019 12:18:15 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2019/10/%E8%A7%A3%E5%86%B3sddm%E4%B8%BB%E9%A2%98%E6%8A%A5qtquick.controls%E6%9C%AA%E5%AE%89%E8%A3%85%E7%9A%84%E9%94%99%E8%AF%AF/</guid>
+      <description>&lt;p&gt;当sddm报&lt;code&gt;QtQuick.Controls&lt;/code&gt;错误的时候，后期设置的sddm theme就会失效，变为默认theme（chiou）&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>OverlayFs</title>
+      <link>https://yj1516.top/2019/10/overlayfs/</link>
+      <pubDate>Fri, 18 Oct 2019 09:54:13 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2019/10/overlayfs/</guid>
+      <description>&lt;p&gt;OverlayFs(Overlay Filesystem)是Linux的一种文件系统——&lt;strong&gt;&lt;span class=&#34;highlight-text orange&#34;&gt;union mount filesystem（联合挂载文件系统）&lt;/span&gt;&lt;/strong&gt;，自Linux Kernal 3.18开始合并到linux内核中&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>解决ssh连接用时过长问题</title>
+      <link>https://yj1516.top/2019/10/%E8%A7%A3%E5%86%B3ssh%E8%BF%9E%E6%8E%A5%E7%94%A8%E6%97%B6%E8%BF%87%E9%95%BF%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Thu, 17 Oct 2019 15:01:16 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2019/10/%E8%A7%A3%E5%86%B3ssh%E8%BF%9E%E6%8E%A5%E7%94%A8%E6%97%B6%E8%BF%87%E9%95%BF%E9%97%AE%E9%A2%98/</guid>
+      <description>&lt;p&gt;某些Linux发行版默认ssh配置会导致连接用时过长，修改一个配置项即可修复该问题&amp;hellip;&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Hello World</title>
+      <link>https://yj1516.top/2019/10/hello-world/</link>
+      <pubDate>Wed, 16 Oct 2019 10:27:39 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2019/10/hello-world/</guid>
+      <description>&lt;p&gt;文章摘要&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

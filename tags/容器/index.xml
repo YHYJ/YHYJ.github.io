@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>容器 on Time</title>
+    <link>https://yj1516.top/tags/%E5%AE%B9%E5%99%A8/</link>
+    <description>Recent content in 容器 on Time</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 04 Nov 2019 10:13:11 +0800</lastBuildDate><atom:link href="https://yj1516.top/tags/%E5%AE%B9%E5%99%A8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>调整docker的log配置参数</title>
+      <link>https://yj1516.top/2019/11/%E8%B0%83%E6%95%B4docker%E7%9A%84log%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/</link>
+      <pubDate>Mon, 04 Nov 2019 10:13:11 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2019/11/%E8%B0%83%E6%95%B4docker%E7%9A%84log%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/</guid>
+      <description>&lt;p&gt;docker默认的配置并不会限制log文件的大小，这导致了我的NanoPi-R1自带的eMMC(8G)在短短4天内就被log文件撑满了&amp;hellip;&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

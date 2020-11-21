@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.77.0 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="author" content="YJ">
+<meta name="keywords" content="network, development, next-gen">
+<meta name="description" content="debian系使用NetworkManager配合networking为wifi设置静态IP的办法">
+
+
+<meta property="og:description" content="debian系使用NetworkManager配合networking为wifi设置静态IP的办法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Debian系的网络配置">
+<meta name="twitter:title" content="Debian系的网络配置">
+<meta property="og:url" content="https://yj1516.top/2020/01/debian%E7%B3%BB%E7%9A%84%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/">
+<meta property="twitter:url" content="https://yj1516.top/2020/01/debian%E7%B3%BB%E7%9A%84%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/">
+<meta property="og:site_name" content="Time">
+<meta property="og:description" content="debian系使用NetworkManager配合networking为wifi设置静态IP的办法">
+<meta name="twitter:description" content="debian系使用NetworkManager配合networking为wifi设置静态IP的办法">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2020-01-15T13:13:34">
+  
+  
+    <meta property="article:modified_time" content="2020-01-15T13:13:34">
+  
+  
+  
+    
+      <meta property="article:section" content="linux">
+    
+      <meta property="article:section" content="network">
+    
+  
+  
+    
+      <meta property="article:tag" content="linux">
+    
+      <meta property="article:tag" content="debian">
+    
+      <meta property="article:tag" content="network">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/yukari.png">
+  <meta property="twitter:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/yukari.png">
+
+
+  <meta property="og:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/linux_debian_logo_1920x1080.jpg">
+  <meta property="twitter:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/linux_debian_logo_1920x1080.jpg">
+
+
+
+
+  <meta property="og:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg">
+  <meta property="twitter:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg">
+
+
+    <title>Debian系的网络配置</title>
+
+    <link rel="icon" href="https://gitee.com/YJ1516/MyPic/raw/master/picgo/favicon.jpg">
+    
+
+    
+
+    <link rel="canonical" href="https://yj1516.top/2020/01/debian%E7%B3%BB%E7%9A%84%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://yj1516.top/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-150098882-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://yj1516.top/">Time</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://yj1516.top/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://yj1516.top/#about">
+          <img class="sidebar-profile-picture" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">YJ</h4>
+        
+          <h5 class="sidebar-profile-bio"><em>猫奴</em> <em>闲人</em></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/YHYJ" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              post-header-cover--full"
+       style="background-image:url('https://gitee.com/YJ1516/MyPic/raw/master/picgo/linux_debian_logo_1920x1080.jpg')"
+       data-behavior="5">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      Debian系的网络配置
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2020-01-15T13:13:34&#43;08:00">
+        
+  
+  
+  
+  
+    2020-1-15
+  
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://yj1516.top/categories/linux">linux</a>, 
+    
+      <a class="category-link" href="https://yj1516.top/categories/network">network</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="5"
+        class="hasCover
+               hasCoverMetaIn
+               hasCoverCaption">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+            <span class="post-header-cover-caption caption">KISS</span>
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>debian系使用NetworkManager配合networking为wifi设置静态IP的办法</p>
+
+<h1 id="table-of-contents">Table of Contents</h1><nav id="TableOfContents">
+<ul>
+<li><a href="#起因">起因</a></li>
+<li><a href="#系统目前的情况">系统目前的情况</a></li>
+<li><a href="#准备工作">准备工作</a>
+<ul>
+<li><a href="#查看nanopi的网络设备">查看NanoPi的网络设备</a></li>
+<li><a href="#开启wifi设备">开启wifi设备</a></li>
+<li><a href="#扫描周围wifi信息">扫描周围wifi信息</a></li>
+</ul></li>
+<li><a href="#连接wifi">连接wifi</a>
+<ul>
+<li><a href="#不需要为wifi配置静态ip-由路由器dhcp自动分配">不需要为wifi配置静态IP，由路由器DHCP自动分配</a></li>
+<li><a href="#需要为wifi配置静态ip">需要为wifi配置静态IP</a>
+<ul>
+<li><a href="#修改配制文件">修改配制文件</a>
+<ul>
+<li><a href="#networkmanager的配置文件">NetworkManager的配置文件</a></li>
+<li><a href="#ifupdown的网络配制文件">ifupdown的网络配制文件</a></li>
+</ul></li>
+<li><a href="#使配置生效">使配置生效</a></li>
+<li><a href="#查看是否生效">查看是否生效</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+<h1 id="起因">起因</h1>
+
+<p>最近在捣鼓NanoPi，其官方提供的系统安装了NetworkManager和networking两个网络管理器</p>
+
+<p>默认两个服务都是&rsquo;enable&rsquo;状态的，因为功能重叠，我&rsquo;disable&rsquo;了networking服务，使用NetworkManager作为默认网络管理器</p>
+
+<p>因为我使用的是NanoPi R1，这个型号有wifi设备，又恰好想要为NanoPi连接的wifi设置静态IP，路由器不方便配置，就想在NanoPi里设置了</p>
+
+<h1 id="系统目前的情况">系统目前的情况</h1>
+
+<p>目前，系统中关于网络方面的配置如下：</p>
+
+<ul>
+<li><div class="alert info no-icon ">
+  <p>网络管理服务</p>
+</div>
+
+<ul>
+<li>Networkmanager: <span class="highlight-text green">由包network-manager提供</span></li>
+</ul></li>
+
+<li><div class="alert info no-icon ">
+  <p>网络管理工具</p>
+</div>
+
+<ul>
+<li><code>nmcli</code>: <span class="highlight-text green">由包network-manager提供</span></li>
+<li><code>iwlist</code>: <span class="highlight-text blue">由包wireless-tools提供</span></li>
+<li><code>ifup</code>: <span class="highlight-text orange">由包ifupdown提供</span></li>
+<li><code>ifdown</code>: <span class="highlight-text orange">由包ifupdown提供</span></li>
+</ul></li>
+
+<li><div class="alert info no-icon ">
+  <p>网络配置文件</p>
+</div>
+
+<ul>
+<li><code>/etc/NetworkManager/NetworkManager.conf</code>: <span class="highlight-text green">由包network-manager提供</span></li>
+<li><code>/etc/network/interfaces</code>: <span class="highlight-text orange">由包ifupdown提供</span></li>
+</ul></li>
+</ul>
+
+<p>由NetworkManager提供网络管理服务，<code>nmcli</code>或<code>iwlist</code>作为网络搜索工具，<code>/etc/NetworkManager/NetworkManager.conf</code>和<code>/etc/network/interfaces</code>提供网络配置文件</p>
+
+<p>情况分两种：</p>
+
+<ol>
+<li><p>需要为wifi配置静态IP</p>
+
+<p>NetworkManager只提供网络管理和<code>nmcli</code>/<code>iwlist</code>的基础，wifi设备并不由它管理，具体的网络配置在<code>/etc/network/interfaces</code>中进行</p></li>
+
+<li><p>不需要为wifi配置静态IP，由路由器DHCP自动分配</p>
+
+<p>NetworkManager提供网络管理和<code>nmcli</code>/<code>iwlist</code>的基础并管理wifi设备，使用<code>nmcli</code>命令连接wifi</p></li>
+</ol>
+
+<h1 id="准备工作">准备工作</h1>
+
+<div class="alert info ">
+  <p>这种情况下不需要ifupdown</p>
+</div>
+
+<h2 id="查看nanopi的网络设备">查看NanoPi的网络设备</h2>
+
+<p>执行以下命令：</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight shell language-shell">
+  <figcaption>
+    
+      <span>shell</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-shell"><code class="shell">$ nmcli dev</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+
+ 
+  
+  
+  
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+  
+
+ 
+  
+  
+  
+  
+    
+  
+    
+      
+    
+  
+
+<div class="figure left" >
+  
+    <a class="fancybox" href="https://gitee.com/YJ1516/MyPic/raw/master/picgo/nmcli_dev.png" title="查看网络设备" data-fancybox-group="group:travel">
+  
+    <img class="fig-img" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/nmcli_dev.png" style="width: 692px;height: 147px;" alt="查看网络设备">
+  
+    </a>
+  
+   
+    <span class="caption">查看网络设备</span>
+  
+</div>
+
+  <div style="clear:both;"></div>
+
+
+<blockquote>
+<p>各列的含义：</p>
+
+<p>DEVICE列：设备名</p>
+
+<p>TYPE列：设备种类</p>
+
+<p>STATE列：连接/管理状态</p>
+
+<p>CONNECTION列：简要连接信息</p>
+</blockquote>
+
+<h2 id="开启wifi设备">开启wifi设备</h2>
+
+<p>如果&rsquo;wlan0&rsquo;的STATE值是&rsquo;uavailable&rsquo;，代表wifi设备不可用，使用以下命令激活wifi设备：</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight shell language-shell">
+  <figcaption>
+    
+      <span>shell</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-shell"><code class="shell">$ nmcli r wifi on</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<h2 id="扫描周围wifi信息">扫描周围wifi信息</h2>
+
+<p>执行以下命令：</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight shell language-shell">
+  <figcaption>
+    
+      <span>shell</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-shell"><code class="shell">$ nmcli dev wifi</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+
+ 
+  
+  
+  
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+  
+
+ 
+  
+  
+  
+  
+    
+  
+    
+      
+    
+  
+
+<div class="figure left" >
+  
+    <a class="fancybox" href="https://gitee.com/YJ1516/MyPic/raw/master/picgo/wifi_info.png" title="扫描wifi" data-fancybox-group="group:travel">
+  
+    <img class="fig-img" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/wifi_info.png" style="width: 1375px;height: 146px;" alt="扫描wifi">
+  
+    </a>
+  
+   
+    <span class="caption">扫描wifi</span>
+  
+</div>
+
+  <div style="clear:both;"></div>
+
+
+<h1 id="连接wifi">连接wifi</h1>
+
+<h2 id="不需要为wifi配置静态ip-由路由器dhcp自动分配">不需要为wifi配置静态IP，由路由器DHCP自动分配</h2>
+
+<p>因为不需要修改wifi连接参数，所以使用<code>nmcli</code>命令即可</p>
+
+<p><a href="#扫描周围wifi信息">扫描周围wifi信息</a>完成之后，如图所示：</p>
+
+
+ 
+  
+  
+  
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+  
+
+ 
+  
+  
+  
+  
+    
+  
+    
+      
+    
+  
+
+<div class="figure left" >
+  
+    <a class="fancybox" href="https://gitee.com/YJ1516/MyPic/raw/master/picgo/wifi_info.png" title="扫描wifi" data-fancybox-group="group:travel">
+  
+    <img class="fig-img" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/wifi_info.png" style="width: 1375px;height: 146px;" alt="扫描wifi">
+  
+    </a>
+  
+   
+    <span class="caption">扫描wifi</span>
+  
+</div>
+
+  <div style="clear:both;"></div>
+
+
+<p>根据wifi的&rsquo;SSID&rsquo;（即wifi名）进行连接，执行以下命令：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># nmcli dev wifi connect &#34;SSID&#34; password &#34;PASSWORD&#34;</span></code></pre></div>
+<blockquote>
+<p>&ldquo;SSID&rdquo;是wifi名，&rdquo;PASSWORD&rdquo;是对应的密码</p>
+
+<p>连接成功之后，每次重启NanoPi都会自动连接该wifi</p>
+</blockquote>
+
+<p>如果Pi有多个无线网络设备，可以使用ifname参数指定使用的设备名：</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight shell language-shell">
+  <figcaption>
+    
+      <span>shell</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-shell"><code class="shell"># nmcli dev wifi connect &#34;SSID&#34; password &#34;PASSWORD&#34; ifname &#34;wlanX&#34;</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<h2 id="需要为wifi配置静态ip">需要为wifi配置静态IP</h2>
+
+<p>因为需要修改wifi的连接参数，所以需要配合ifupdown的网络配置文件<code>/etc/network/interfaces</code>一起使用</p>
+
+<h3 id="修改配制文件">修改配制文件</h3>
+
+<h4 id="networkmanager的配置文件">NetworkManager的配置文件</h4>
+
+<p>确保NetworkManager的配置文件<code>/etc/NetworkManager/NetworkManager.conf</code>中有如下配置：</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight shell language-shell">
+  <figcaption>
+    
+      <span>shell</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-shell"><code class="shell">[ifupdown]
+managed=false</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<p><strong><code>managed</code>的值必须是<code>false</code></strong></p>
+
+<h4 id="ifupdown的网络配制文件">ifupdown的网络配制文件</h4>
+
+<p><a href="扫描周围wifi信息">扫描周围wifi信息</a>完成之后，如图所示：</p>
+
+
+ 
+  
+  
+  
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+  
+
+ 
+  
+  
+  
+  
+    
+  
+    
+      
+    
+  
+
+<div class="figure left" >
+  
+    <a class="fancybox" href="https://gitee.com/YJ1516/MyPic/raw/master/picgo/wifi_info.png" title="扫描wifi" data-fancybox-group="group:travel">
+  
+    <img class="fig-img" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/wifi_info.png" style="width: 1375px;height: 146px;" alt="扫描wifi">
+  
+    </a>
+  
+   
+    <span class="caption">扫描wifi</span>
+  
+</div>
+
+  <div style="clear:both;"></div>
+
+
+<p>&lsquo;SSID&rsquo;列是wifi名，&rsquo;CHAN&rsquo;列是wifi使用的信道，需要用到这两个参数</p>
+
+<p>修改ifupdown的网络配置文件<code>/etc/network/interfaces</code>，在文件的最后空一行新增如下内容:</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight shell language-shell">
+  <figcaption>
+    
+      <span>shell</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-shell"><code class="shell">allow-hotplug &lt;无线设备名&gt;
+iface &lt;无线设备名&gt; inet static
+address &lt;静态IP&gt;
+netmask &lt;子网掩码&gt;
+wpa-ssid &lt;SSID&gt;
+wpa-passphrase &lt;wifi密码&gt;
+wireless-channel &lt;Channel&gt;</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<blockquote>
+<p>&lt;无线设备名&gt;：如图所示，&rsquo;DEVICE&rsquo;列就是网络设备的名字，从中确定无线设备名，手动设置</p>
+
+
+ 
+  
+  
+  
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+  
+
+ 
+  
+  
+  
+  
+    
+  
+    
+      
+    
+  
+
+<div class="figure left" >
+  
+    <a class="fancybox" href="https://gitee.com/YJ1516/MyPic/raw/master/picgo/nmcli_dev.png" title="查看网络设备" data-fancybox-group="group:travel">
+  
+    <img class="fig-img" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/nmcli_dev.png" style="width: 692px;height: 147px;" alt="查看网络设备">
+  
+    </a>
+  
+   
+    <span class="caption">查看网络设备</span>
+  
+</div>
+
+  <div style="clear:both;"></div>
+
+
+<p>&lt;静态IP&gt;：要连接的wifi的IP，手动设置</p>
+
+<p>&lt;子网掩吗&gt;：要连接的wifi的子网掩码，手动设置</p>
+
+<p><SSID>：要连接的wifi的名字，手动设置</p>
+
+<p><wifi密码>：要连接的wifi的密码，手动设置</p>
+
+<p><Channel>：要连接的wifi的信道，手动设置。如图，&rsquo;CHAN&rsquo;列即是各个wifi对应的信道</p>
+</blockquote>
+
+<h3 id="使配置生效">使配置生效</h3>
+
+<p>配置文件修改完成后，执行以下命令使配置文件生效：</p>
+
+<ol>
+<li><p>重启NetworkManager：</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight shell language-shell">
+  <figcaption>
+    
+      <span>shell</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-shell"><code class="shell">    # systemctl restart NetworkManager
+    </code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure></li>
+
+<li><p>启动配置好的无线设备</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight shell language-shell">
+  <figcaption>
+    
+      <span>shell</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-shell"><code class="shell">    # ifup &lt;无线设备名&gt;
+    </code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<blockquote>
+<p>例如：<code>ifup wlan0</code></p>
+</blockquote></li>
+</ol>
+
+<h3 id="查看是否生效">查看是否生效</h3>
+
+<p>执行以下命令：</p>
+
+
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+<figure class="highlight shell language-shell">
+  <figcaption>
+    
+      <span>shell</span>
+    
+  </figcaption>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br></pre>
+        </td>
+        <td class="code">
+          <pre class="code-highlight language-shell"><code class="shell">$ ip a</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<p>正常情况下可以看到无线设备已经设置为指定的IP，并且可以ping通同一wifi下的其他设备</p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://yj1516.top/tags/linux/">linux</a>
+
+  <a class="tag tag--primary tag--small" href="https://yj1516.top/tags/debian/">debian</a>
+
+  <a class="tag tag--primary tag--small" href="https://yj1516.top/tags/network/">network</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2019/11/shell%E8%84%9A%E6%9C%AC%E8%BE%93%E5%87%BA%E6%8E%A7%E5%88%B6%E7%A0%81/" data-tooltip="Shell脚本输出控制码">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2020/10/git-lfs%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/" data-tooltip="Git LFS的使用方法">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yj1516.top/2020/01/debian%E7%B3%BB%E7%9A%84%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yj1516.top/2020/01/debian%E7%B3%BB%E7%9A%84%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#table-of-contents">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 <a href="https://github.com/YHYJ">YHYJ</a>. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2019/11/shell%E8%84%9A%E6%9C%AC%E8%BE%93%E5%87%BA%E6%8E%A7%E5%88%B6%E7%A0%81/" data-tooltip="Shell脚本输出控制码">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2020/10/git-lfs%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/" data-tooltip="Git LFS的使用方法">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yj1516.top/2020/01/debian%E7%B3%BB%E7%9A%84%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yj1516.top/2020/01/debian%E7%B3%BB%E7%9A%84%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#table-of-contents">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fyj1516.top%2F2020%2F01%2Fdebian%25E7%25B3%25BB%25E7%259A%2584%25E7%25BD%2591%25E7%25BB%259C%25E9%2585%258D%25E7%25BD%25AE%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fyj1516.top%2F2020%2F01%2Fdebian%25E7%25B3%25BB%25E7%259A%2584%25E7%25BD%2591%25E7%25BB%259C%25E9%2585%258D%25E7%25BD%25AE%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">YJ</h4>
+    
+      <div id="about-card-bio"><em>猫奴</em> <em>闲人</em></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Developer
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    <div id="cover" style="background-image:url('https://gitee.com/YJ1516/MyPic/raw/master/picgo/cover.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://yj1516.top/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+  
+    <script src="https://yj1516.top/js/script-clicklove.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous"  integrity="sha256-t2wP3gOvuWRLVSKRJIswwZfaFz3JudrtJwLumaoMaWU=" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous"  integrity="sha256-UWMcoo+ry/Db1ZV0LMo6wbJHnpTUShrVeeWIbfC3ZJw=" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/rust.min.js"></script>
+  
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/yj1516.top\/2020\/01\/debian%E7%B3%BB%E7%9A%84%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE\/';
+          
+            this.page.identifier = '\/2020\/01\/debian%E7%B3%BB%E7%9A%84%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'yj1516';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

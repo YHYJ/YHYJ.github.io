@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.77.0 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="author" content="YJ">
+<meta name="keywords" content="Docker, development, next-gen">
+<meta name="description" content="在个人电脑构建支持amd64、arm和arm64的多架构镜像">
+
+
+<meta property="og:description" content="在个人电脑构建支持amd64、arm和arm64的多架构镜像">
+<meta property="og:type" content="article">
+<meta property="og:title" content="本地构建支持多架构的Docker镜像">
+<meta name="twitter:title" content="本地构建支持多架构的Docker镜像">
+<meta property="og:url" content="https://yj1516.top/2020/11/%E6%9C%AC%E5%9C%B0%E6%9E%84%E5%BB%BA%E6%94%AF%E6%8C%81%E5%A4%9A%E6%9E%B6%E6%9E%84%E7%9A%84docker%E9%95%9C%E5%83%8F/">
+<meta property="twitter:url" content="https://yj1516.top/2020/11/%E6%9C%AC%E5%9C%B0%E6%9E%84%E5%BB%BA%E6%94%AF%E6%8C%81%E5%A4%9A%E6%9E%B6%E6%9E%84%E7%9A%84docker%E9%95%9C%E5%83%8F/">
+<meta property="og:site_name" content="Time">
+<meta property="og:description" content="在个人电脑构建支持amd64、arm和arm64的多架构镜像">
+<meta name="twitter:description" content="在个人电脑构建支持amd64、arm和arm64的多架构镜像">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2020-11-01T14:37:08">
+  
+  
+    <meta property="article:modified_time" content="2020-11-01T14:37:08">
+  
+  
+  
+    
+      <meta property="article:section" content="docker">
+    
+      <meta property="article:section" content="image">
+    
+  
+  
+    
+      <meta property="article:tag" content="docker">
+    
+      <meta property="article:tag" content="dockerfile">
+    
+      <meta property="article:tag" content="multi-arch">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/docker_750x236.png">
+  <meta property="twitter:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/docker_750x236.png">
+
+
+  <meta property="og:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/docker_1920x1080.jpeg">
+  <meta property="twitter:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/docker_1920x1080.jpeg">
+
+
+
+
+  <meta property="og:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg">
+  <meta property="twitter:image" content="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg">
+
+
+    <title>本地构建支持多架构的Docker镜像</title>
+
+    <link rel="icon" href="https://gitee.com/YJ1516/MyPic/raw/master/picgo/favicon.jpg">
+    
+
+    
+
+    <link rel="canonical" href="https://yj1516.top/2020/11/%E6%9C%AC%E5%9C%B0%E6%9E%84%E5%BB%BA%E6%94%AF%E6%8C%81%E5%A4%9A%E6%9E%B6%E6%9E%84%E7%9A%84docker%E9%95%9C%E5%83%8F/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://yj1516.top/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-150098882-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://yj1516.top/">Time</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://yj1516.top/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://yj1516.top/#about">
+          <img class="sidebar-profile-picture" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">YJ</h4>
+        
+          <h5 class="sidebar-profile-bio"><em>猫奴</em> <em>闲人</em></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/YHYJ" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yj1516.top/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              post-header-cover--full"
+       style="background-image:url('https://gitee.com/YJ1516/MyPic/raw/master/picgo/docker_1920x1080.jpeg')"
+       data-behavior="5">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      本地构建支持多架构的Docker镜像
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2020-11-01T14:37:08&#43;08:00">
+        
+  
+  
+  
+  
+    2020-11-1
+  
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://yj1516.top/categories/docker">docker</a>, 
+    
+      <a class="category-link" href="https://yj1516.top/categories/image">image</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="5"
+        class="hasCover
+               hasCoverMetaIn
+               hasCoverCaption">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+            <span class="post-header-cover-caption caption">集装箱？容器？Docker！</span>
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>在个人电脑构建支持amd64、arm和arm64的多架构镜像</p>
+
+<p>而不是借助于Travis CI或者DockerHub，适用于内网环境</p>
+
+<h1 id="table-of-contents">Table of Contents</h1><nav id="TableOfContents">
+<ul>
+<li><a href="#用到的工具">用到的工具</a></li>
+<li><a href="#安装">安装</a>
+<ul>
+<li><a href="#直接启用">直接启用</a></li>
+<li><a href="#二进制文件">二进制文件</a></li>
+<li><a href="#从源码编译">从源码编译</a></li>
+</ul></li>
+<li><a href="#验证">验证</a></li>
+<li><a href="#构建">构建</a>
+<ul>
+<li><a href="#开启binfmt-misc">开启binfmt_misc</a></li>
+<li><a href="#切换默认的构建器">切换默认的构建器</a></li>
+<li><a href="#开始构建">开始构建</a></li>
+</ul></li>
+<li><a href="#总结">总结</a></li>
+<li><a href="#参考">参考</a></li>
+</ul>
+</nav>
+
+<h1 id="用到的工具">用到的工具</h1>
+
+<ul>
+<li><a href="https://github.com/docker/buildx">buildx</a>是一个Docker CLI插件，通过BuildKit扩展了构建功能</li>
+<li><a href="https://github.com/moby/buildkit">BuildKit</a>是一个并发、高效缓存且与DOckerfile无关的构建器工具箱</li>
+<li><a href="https://hub.docker.com/r/docker/binfmt">docker/binfmt</a>提供qemu模拟器来模拟不同架构</li>
+</ul>
+
+<h1 id="安装">安装</h1>
+
+<p>buildx现在(2020-09-04)还是一个预览功能，默认只支持19.03或更高版本的Docker，有以下三种方式安装buildx：</p>
+
+<h2 id="直接启用">直接启用</h2>
+
+<p>buildx从Docker 19.03开始与Docker CE集成到一起，但想要使用它还要在Docker CLI上启用实验模式</p>
+
+<p>启用实验模式有以下两种方法，任选其一：</p>
+
+<ul>
+<li><p>编辑<code>~/.docker/config.json</code>，添加如下内容：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;experimental&#34;</span>: <span style="color:#e6db74">&#34;enabled&#34;</span>
+}</code></pre></div></li>
+
+<li><p>设置环境变量<code>DOCKER_CLI_EXPERIMENTAL=enabled</code></p></li>
+</ul>
+
+<h2 id="二进制文件">二进制文件</h2>
+
+<p>直接安装buildx二进制文件（这能为旧版Docker提供<strong>有限的功能集</strong>）</p>
+
+<ol>
+<li><p>从<a href="https://github.com/docker/buildx/releases/latest">buildx - releases页面</a>下载最新的二进制文件</p></li>
+
+<li><p>将该文件重命名为<code>docker-buildx</code>并复制到<code>~/.docker/cli-plugins/</code>下</p></li>
+
+<li><p>然后赋予其可执行权限：</p>
+<pre><code>chmod x ~/.docker/cli-plugins/docker-buildx</code></pre></li>
+</ol>
+
+<h2 id="从源码编译">从源码编译</h2>
+
+<p>也可以自己编译buildx，具体请参考<a href="https://github.com/docker/buildx#building">buildx#building</a></p>
+
+<h1 id="验证">验证</h1>
+
+<p>使用以下命令验证buildx是否已经可用：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker buildx version</code></pre></div>
+<h1 id="构建">构建</h1>
+
+<p>buildx可用之后，严格按照以下步骤构建多架构镜像</p>
+
+<h2 id="开启binfmt-misc">开启binfmt_misc</h2>
+
+<p>binfmt_misc用来支持多架构</p>
+
+<p>如果使用的是Linux需要设置binfmt_misc，如果使用的是Windows或者OSX的Docker桌面版则不需要，因为Docker本来就需要binfmt_misc支持才能在这两个系统上运行</p>
+
+<blockquote>
+<p>因为Docker是原生运行于Linux上的，而在Windows/OSX上是通过模拟一个Linux内核来运行的</p>
+</blockquote>
+
+<ol>
+<li><p>开启binfmt_misc</p>
+
+<p>在开启binfmt_misc之前执行以下命令：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ll /proc/sys/fs/binfmt_misc</code></pre></div>
+<p>可以看到该路径下只有&rsquo;registry&rsquo;和&rsquo;status&rsquo;两个文件：</p>
+
+<p><img src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/before_binnfmt.png" alt="Before" /></p>
+
+<p>接着执行以下命令开启binfmt_misc：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker run --privileged --rm tonistiigi/binfmt --install all</code></pre></div>
+<p>再次查看<code>/proc/sys/fs/binfmt_misc</code>：</p>
+
+<p><img src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/after_binfmt.png" alt="After" /></p></li>
+
+<li><p>查看指定架构的解释器是否已启用</p>
+
+<p>查看<code>/proc/sys/fs/binfmt_misc</code>下新增的以&rsquo;qemu&rsquo;开头的文件内容：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cat /proc/sys/fs/binfmt_misc/qemu-*</code></pre></div>
+<p><img src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/interpreter.png" alt="QEMU interpreter" /></p>
+
+<p>可以看到每个文件的第一行都是&rsquo;enabled&rsquo;，即代表该架构处理程序已启用</p>
+
+<p>注意&rsquo;interpreter&rsquo;行的内容，这是要用到的程序，如果没有这些程序的话需要安装</p>
+
+<blockquote>
+<p>Arch Linux中是qemu-arch-extra包（或qemu-headless-arch-extra，取决于依赖的是qemu还是qemu-headless）</p>
+
+<p>Ubuntu中是qemu-user包</p>
+</blockquote></li>
+</ol>
+
+<h2 id="切换默认的构建器">切换默认的构建器</h2>
+
+<p>执行命令<code>docker buildx ls</code>可以看到Docker默认的构建器default只支持amd64和i386架构，所以要创建一个新的支持多架构的构建器：</p>
+
+<ol>
+<li><p>创建多架构构建器muilt-arch：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker buildx create --name muilt-arch</code></pre></div></li>
+
+<li><p>将默认构建器切换为muilt-arch：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker buildx use muilt-arch</code></pre></div></li>
+
+<li><p>检查当前构建器：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker buildx inspect muilt-arch --bootstrap</code></pre></div>
+<blockquote>
+<p><code>--bootstrap</code>参数确保构建器启动</p>
+</blockquote>
+
+<p><img src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/inspect_mailt-arch.png" alt="inspect mailt-arch" /></p>
+
+<p><strong>这会拉取moby/buildkit镜像，确保网络连接正常或提前已完成拉取</strong></p></li>
+</ol>
+
+<h2 id="开始构建">开始构建</h2>
+
+<p>接下来使用muilt-arch构建器进行构建即可</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker buildx build --file ./Dockerfile --platform linux/arm,linux/arm64,linux/amd64 --tag image-name:image-tag .</code></pre></div>
+<blockquote>
+<p>如果构建过程中报错：<code>failed to solve: rpc error: code = Unknown desc = failed to load LLB: runtime execution on platform linux/arm/v7 not supported</code>，尝试重新创建构建器</p>
+</blockquote>
+
+<h1 id="总结">总结</h1>
+
+<p>使用多架构构建器来构建image需要满足以下条件：</p>
+
+<ol>
+<li><p>启用了buildx</p></li>
+
+<li><p>开启了binfmt_misc</p>
+
+<p>必须运行<code>docker run --privileged --rm tonistiigi/binfmt --install all</code></p></li>
+
+<li><p>确保使用的是多架构构建器</p>
+
+<p>必须运行<code>docker buildx use muilt-arch</code>以启用多架构构建器</p>
+
+<p><strong>确保星号在muilt-arch上并且其Status是running</strong>：</p>
+
+<p><img src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/builder-2.png" alt="builder" /></p></li>
+
+<li><p>构建时指定了架构</p></li>
+</ol>
+
+<h1 id="参考">参考</h1>
+
+<p><a href="https://www.docker.com/blog/getting-started-with-docker-for-arm-on-linux/">Getting started with Docker for Arm on Linux</a></p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://yj1516.top/tags/docker/">docker</a>
+
+  <a class="tag tag--primary tag--small" href="https://yj1516.top/tags/dockerfile/">dockerfile</a>
+
+  <a class="tag tag--primary tag--small" href="https://yj1516.top/tags/multi-arch/">multi-arch</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2020/11/%E4%B8%8D%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95/" data-tooltip="不常用命令备忘录">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2020/11/%E5%85%88%E8%A3%85linux%E5%90%8E%E8%A3%85windows%E7%9A%84%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98/" data-tooltip="先装Linux后装Windows的引导问题">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yj1516.top/2020/11/%E6%9C%AC%E5%9C%B0%E6%9E%84%E5%BB%BA%E6%94%AF%E6%8C%81%E5%A4%9A%E6%9E%B6%E6%9E%84%E7%9A%84docker%E9%95%9C%E5%83%8F/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yj1516.top/2020/11/%E6%9C%AC%E5%9C%B0%E6%9E%84%E5%BB%BA%E6%94%AF%E6%8C%81%E5%A4%9A%E6%9E%B6%E6%9E%84%E7%9A%84docker%E9%95%9C%E5%83%8F/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#table-of-contents">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 <a href="https://github.com/YHYJ">YHYJ</a>. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2020/11/%E4%B8%8D%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95/" data-tooltip="不常用命令备忘录">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://yj1516.top/2020/11/%E5%85%88%E8%A3%85linux%E5%90%8E%E8%A3%85windows%E7%9A%84%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98/" data-tooltip="先装Linux后装Windows的引导问题">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://yj1516.top/2020/11/%E6%9C%AC%E5%9C%B0%E6%9E%84%E5%BB%BA%E6%94%AF%E6%8C%81%E5%A4%9A%E6%9E%B6%E6%9E%84%E7%9A%84docker%E9%95%9C%E5%83%8F/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://yj1516.top/2020/11/%E6%9C%AC%E5%9C%B0%E6%9E%84%E5%BB%BA%E6%94%AF%E6%8C%81%E5%A4%9A%E6%9E%B6%E6%9E%84%E7%9A%84docker%E9%95%9C%E5%83%8F/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#table-of-contents">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fyj1516.top%2F2020%2F11%2F%25E6%259C%25AC%25E5%259C%25B0%25E6%259E%2584%25E5%25BB%25BA%25E6%2594%25AF%25E6%258C%2581%25E5%25A4%259A%25E6%259E%25B6%25E6%259E%2584%25E7%259A%2584docker%25E9%2595%259C%25E5%2583%258F%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fyj1516.top%2F2020%2F11%2F%25E6%259C%25AC%25E5%259C%25B0%25E6%259E%2584%25E5%25BB%25BA%25E6%2594%25AF%25E6%258C%2581%25E5%25A4%259A%25E6%259E%25B6%25E6%259E%2584%25E7%259A%2584docker%25E9%2595%259C%25E5%2583%258F%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://gitee.com/YJ1516/MyPic/raw/master/picgo/Mercy.jpeg" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">YJ</h4>
+    
+      <div id="about-card-bio"><em>猫奴</em> <em>闲人</em></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Developer
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    <div id="cover" style="background-image:url('https://gitee.com/YJ1516/MyPic/raw/master/picgo/cover.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://yj1516.top/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+  
+    <script src="https://yj1516.top/js/script-clicklove.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous"  integrity="sha256-t2wP3gOvuWRLVSKRJIswwZfaFz3JudrtJwLumaoMaWU=" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous"  integrity="sha256-UWMcoo+ry/Db1ZV0LMo6wbJHnpTUShrVeeWIbfC3ZJw=" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/rust.min.js"></script>
+  
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/yj1516.top\/2020\/11\/%E6%9C%AC%E5%9C%B0%E6%9E%84%E5%BB%BA%E6%94%AF%E6%8C%81%E5%A4%9A%E6%9E%B6%E6%9E%84%E7%9A%84docker%E9%95%9C%E5%83%8F\/';
+          
+            this.page.identifier = '\/2020\/11\/%E6%9C%AC%E5%9C%B0%E6%9E%84%E5%BB%BA%E6%94%AF%E6%8C%81%E5%A4%9A%E6%9E%B6%E6%9E%84%E7%9A%84docker%E9%95%9C%E5%83%8F\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'yj1516';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ssh on Time</title>
+    <link>https://yj1516.top/tags/ssh/</link>
+    <description>Recent content in ssh on Time</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 17 Oct 2019 15:01:16 +0800</lastBuildDate><atom:link href="https://yj1516.top/tags/ssh/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>解决ssh连接用时过长问题</title>
+      <link>https://yj1516.top/2019/10/%E8%A7%A3%E5%86%B3ssh%E8%BF%9E%E6%8E%A5%E7%94%A8%E6%97%B6%E8%BF%87%E9%95%BF%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Thu, 17 Oct 2019 15:01:16 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2019/10/%E8%A7%A3%E5%86%B3ssh%E8%BF%9E%E6%8E%A5%E7%94%A8%E6%97%B6%E8%BF%87%E9%95%BF%E9%97%AE%E9%A2%98/</guid>
+      <description>&lt;p&gt;某些Linux发行版默认ssh配置会导致连接用时过长，修改一个配置项即可修复该问题&amp;hellip;&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

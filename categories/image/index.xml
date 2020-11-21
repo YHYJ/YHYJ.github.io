@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>image on Time</title>
+    <link>https://yj1516.top/categories/image/</link>
+    <description>Recent content in image on Time</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 01 Nov 2020 14:37:08 +0800</lastBuildDate><atom:link href="https://yj1516.top/categories/image/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>本地构建支持多架构的Docker镜像</title>
+      <link>https://yj1516.top/2020/11/%E6%9C%AC%E5%9C%B0%E6%9E%84%E5%BB%BA%E6%94%AF%E6%8C%81%E5%A4%9A%E6%9E%B6%E6%9E%84%E7%9A%84docker%E9%95%9C%E5%83%8F/</link>
+      <pubDate>Sun, 01 Nov 2020 14:37:08 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2020/11/%E6%9C%AC%E5%9C%B0%E6%9E%84%E5%BB%BA%E6%94%AF%E6%8C%81%E5%A4%9A%E6%9E%B6%E6%9E%84%E7%9A%84docker%E9%95%9C%E5%83%8F/</guid>
+      <description>&lt;p&gt;在个人电脑构建支持amd64、arm和arm64的多架构镜像&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

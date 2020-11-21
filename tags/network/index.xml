@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>network on Time</title>
+    <link>https://yj1516.top/tags/network/</link>
+    <description>Recent content in network on Time</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 15 Jan 2020 13:13:34 +0800</lastBuildDate><atom:link href="https://yj1516.top/tags/network/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Debian系的网络配置</title>
+      <link>https://yj1516.top/2020/01/debian%E7%B3%BB%E7%9A%84%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/</link>
+      <pubDate>Wed, 15 Jan 2020 13:13:34 +0800</pubDate>
+      
+      <guid>https://yj1516.top/2020/01/debian%E7%B3%BB%E7%9A%84%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/</guid>
+      <description>&lt;p&gt;debian系使用NetworkManager配合networking为wifi设置静态IP的办法&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
